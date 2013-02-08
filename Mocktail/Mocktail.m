@@ -115,7 +115,8 @@ static NSMutableArray *mockReponses = nil;
 
 - (void)stopLoading;
 {
-    // Mocktail "loads" requests and sends back data synchronously, so there's no point at which a request has started but hasn't finished. An implementation of this method would be meaningless.
+    // Mocktail "loads" requests and sends back data synchronously, so there's no point at which a request has started but hasn't finished.
+    // An implementation of this method would be meaningless.
 }
 
 @end

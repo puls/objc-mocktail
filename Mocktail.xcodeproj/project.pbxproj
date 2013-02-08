@@ -10,6 +10,10 @@
 		A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A822634116C45BC4007C81BC /* Foundation.framework */; };
 		A822634916C45BC4007C81BC /* Mocktail.m in Sources */ = {isa = PBXBuildFile; fileRef = A822634816C45BC4007C81BC /* Mocktail.m */; };
 		A822635016C45D9E007C81BC /* Mocktail.h in Headers */ = {isa = PBXBuildFile; fileRef = A822634616C45BC4007C81BC /* Mocktail.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3F9C70A16C4C9B2001D42D9 /* MTMockResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9C70816C4C9B2001D42D9 /* MTMockResponse.h */; };
+		D3F9C70B16C4C9B2001D42D9 /* MTMockResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9C70916C4C9B2001D42D9 /* MTMockResponse.m */; };
+		D3F9C70F16C4CF44001D42D9 /* MTMockController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9C70D16C4CF44001D42D9 /* MTMockController.h */; };
+		D3F9C71016C4CF44001D42D9 /* MTMockController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9C70E16C4CF44001D42D9 /* MTMockController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +22,10 @@
 		A822634516C45BC4007C81BC /* Mocktail-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mocktail-Prefix.pch"; sourceTree = "<group>"; };
 		A822634616C45BC4007C81BC /* Mocktail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mocktail.h; sourceTree = "<group>"; };
 		A822634816C45BC4007C81BC /* Mocktail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mocktail.m; sourceTree = "<group>"; };
+		D3F9C70816C4C9B2001D42D9 /* MTMockResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTMockResponse.h; sourceTree = "<group>"; };
+		D3F9C70916C4C9B2001D42D9 /* MTMockResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTMockResponse.m; sourceTree = "<group>"; };
+		D3F9C70D16C4CF44001D42D9 /* MTMockController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTMockController.h; sourceTree = "<group>"; };
+		D3F9C70E16C4CF44001D42D9 /* MTMockController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTMockController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +68,7 @@
 		A822634316C45BC4007C81BC /* Mocktail */ = {
 			isa = PBXGroup;
 			children = (
-				A822634616C45BC4007C81BC /* Mocktail.h */,
-				A822634816C45BC4007C81BC /* Mocktail.m */,
+				D3F9C70C16C4CDED001D42D9 /* Classes */,
 				A822634416C45BC4007C81BC /* Supporting Files */,
 			);
 			path = Mocktail;
@@ -75,6 +82,35 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D3F9C70C16C4CDED001D42D9 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A822634616C45BC4007C81BC /* Mocktail.h */,
+				A822634816C45BC4007C81BC /* Mocktail.m */,
+				D3F9C71116C4CF4A001D42D9 /* Controller */,
+				D3F9C71216C4CF50001D42D9 /* Mock Responses */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		D3F9C71116C4CF4A001D42D9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D3F9C70D16C4CF44001D42D9 /* MTMockController.h */,
+				D3F9C70E16C4CF44001D42D9 /* MTMockController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		D3F9C71216C4CF50001D42D9 /* Mock Responses */ = {
+			isa = PBXGroup;
+			children = (
+				D3F9C70816C4C9B2001D42D9 /* MTMockResponse.h */,
+				D3F9C70916C4C9B2001D42D9 /* MTMockResponse.m */,
+			);
+			name = "Mock Responses";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -83,6 +119,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A822635016C45D9E007C81BC /* Mocktail.h in Headers */,
+				D3F9C70A16C4C9B2001D42D9 /* MTMockResponse.h in Headers */,
+				D3F9C70F16C4CF44001D42D9 /* MTMockController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +176,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A822634916C45BC4007C81BC /* Mocktail.m in Sources */,
+				D3F9C70B16C4C9B2001D42D9 /* MTMockResponse.m in Sources */,
+				D3F9C71016C4CF44001D42D9 /* MTMockController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
