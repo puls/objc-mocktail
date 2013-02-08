@@ -40,6 +40,10 @@ So we made one up. It's newline-delimited.
 
 Everything after the newline ending line 5 (that is to say, line 6 and on) is sent back as the response body, verbatim. It doesn't even matter what the filename is. You just use one of these files per mock response "endpoint" and Mocktail loads them all in.
 
+## Mad props
+
+While `NSURLProtocol` has been around forever, its uses aren't obvious unless you read things like [@mattt](http://github.com/mattt)'s awesome [NSHipster blog post on the subject](http://nshipster.com/nsurlprotocol/). If you don't read NSHipster, you're missing out. It's great.
+
 ## Contributing
 
 Your pull requests are welcome, but please don't take this too seriously. Remember, one of Mocktail's greatest features is its simplicity. Our lawyers want you to [sign this form](https://spreadsheets.google.com/spreadsheet/viewform?formkey=dDViT2xzUHAwRkI3X3k5Z0lQM091OGc6MQ&ndplr=1) first, too.
