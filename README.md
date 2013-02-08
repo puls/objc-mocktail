@@ -10,11 +10,14 @@ A simple(r) way to stub out HTTP servers in your Objective-C app.
 	- Performance is `O(N)` for serving N mock responses!
 	- Loads entire—potentially very large—files in to memory!
 - Poorly tested
+- Might crash on malformed input
 - Kind of a hack
+
+You shouldn't ship Mocktail with your code. It's a development tool.
 
 ## Usage
 
-No, really, it's cool. You can read the entire source code in about five minutes to see what's going on. The entire API is a single method:
+No, really, it's cool, you can still use it! You can read the entire source code in about five minutes to see what's going on. The entire API is a single method:
 
     + (void)startWithContentsOfDirectoryAtURL:(NSURL *)url;
 
