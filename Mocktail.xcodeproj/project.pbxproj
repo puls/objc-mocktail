@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A23060616C6FD310062658D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A23060516C6FD310062658D /* UIKit.framework */; };
+		0A23060916C703750062658D /* MTMockResponseHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A23060716C703750062658D /* MTMockResponseHandler.h */; };
+		0A23060A16C703750062658D /* MTMockResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A23060816C703750062658D /* MTMockResponseHandler.m */; };
+		0A23060D16C707130062658D /* MTMockURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A23060B16C707120062658D /* MTMockURLProtocol.h */; };
+		0A23060E16C707130062658D /* MTMockURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A23060C16C707120062658D /* MTMockURLProtocol.m */; };
 		A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A822634116C45BC4007C81BC /* Foundation.framework */; };
 		A822634916C45BC4007C81BC /* Mocktail.m in Sources */ = {isa = PBXBuildFile; fileRef = A822634816C45BC4007C81BC /* Mocktail.m */; };
 		A822635016C45D9E007C81BC /* Mocktail.h in Headers */ = {isa = PBXBuildFile; fileRef = A822634616C45BC4007C81BC /* Mocktail.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -17,6 +22,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A23060516C6FD310062658D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0A23060716C703750062658D /* MTMockResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTMockResponseHandler.h; sourceTree = "<group>"; };
+		0A23060816C703750062658D /* MTMockResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTMockResponseHandler.m; sourceTree = "<group>"; };
+		0A23060B16C707120062658D /* MTMockURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTMockURLProtocol.h; sourceTree = "<group>"; };
+		0A23060C16C707120062658D /* MTMockURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTMockURLProtocol.m; sourceTree = "<group>"; };
 		A822633E16C45BC4007C81BC /* libMocktail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMocktail.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A822634116C45BC4007C81BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A822634516C45BC4007C81BC /* Mocktail-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mocktail-Prefix.pch"; sourceTree = "<group>"; };
@@ -34,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */,
+				0A23060616C6FD310062658D /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				A822634116C45BC4007C81BC /* Foundation.framework */,
+				0A23060516C6FD310062658D /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -87,19 +99,19 @@
 			children = (
 				A822634616C45BC4007C81BC /* Mocktail.h */,
 				A822634816C45BC4007C81BC /* Mocktail.m */,
-				D3F9C71116C4CF4A001D42D9 /* Controller */,
+				D3F9C71116C4CF4A001D42D9 /* Mock Controller */,
 				D3F9C71216C4CF50001D42D9 /* Mock Responses */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		D3F9C71116C4CF4A001D42D9 /* Controller */ = {
+		D3F9C71116C4CF4A001D42D9 /* Mock Controller */ = {
 			isa = PBXGroup;
 			children = (
 				D3F9C70D16C4CF44001D42D9 /* MTMockController.h */,
 				D3F9C70E16C4CF44001D42D9 /* MTMockController.m */,
 			);
-			name = Controller;
+			name = "Mock Controller";
 			sourceTree = "<group>";
 		};
 		D3F9C71216C4CF50001D42D9 /* Mock Responses */ = {
@@ -107,6 +119,10 @@
 			children = (
 				D3F9C70816C4C9B2001D42D9 /* MTMockResponse.h */,
 				D3F9C70916C4C9B2001D42D9 /* MTMockResponse.m */,
+				0A23060716C703750062658D /* MTMockResponseHandler.h */,
+				0A23060816C703750062658D /* MTMockResponseHandler.m */,
+				0A23060B16C707120062658D /* MTMockURLProtocol.h */,
+				0A23060C16C707120062658D /* MTMockURLProtocol.m */,
 			);
 			name = "Mock Responses";
 			sourceTree = "<group>";
@@ -121,6 +137,8 @@
 				A822635016C45D9E007C81BC /* Mocktail.h in Headers */,
 				D3F9C70A16C4C9B2001D42D9 /* MTMockResponse.h in Headers */,
 				D3F9C70F16C4CF44001D42D9 /* MTMockController.h in Headers */,
+				0A23060916C703750062658D /* MTMockResponseHandler.h in Headers */,
+				0A23060D16C707130062658D /* MTMockURLProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +196,8 @@
 				A822634916C45BC4007C81BC /* Mocktail.m in Sources */,
 				D3F9C70B16C4C9B2001D42D9 /* MTMockResponse.m in Sources */,
 				D3F9C71016C4CF44001D42D9 /* MTMockController.m in Sources */,
+				0A23060A16C703750062658D /* MTMockResponseHandler.m in Sources */,
+				0A23060E16C707130062658D /* MTMockURLProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +265,7 @@
 				DSTROOT = /tmp/Mocktail.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -257,6 +278,7 @@
 				DSTROOT = /tmp/Mocktail.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

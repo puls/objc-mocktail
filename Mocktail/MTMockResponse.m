@@ -32,11 +32,59 @@
     return nil;
 }
 
++ (instancetype)mockResponseForURL:(NSURL *)URL HTTPRequestMethod:(NSString *)requestMethod;
+{
+    NSArray *responses = [self mockResponsesForURL:URL HTTPRequestMethod:requestMethod];
+
+    return (responses.count ? [responses objectAtIndex:0] : nil);
+}
+
++ (NSArray *)mockResponsesForURL:(NSURL *)URL HTTPRequestMethod:(NSString *)requestMethod;
+{
+    NSMutableArray *responses = [NSMutableArray array];
+
+    NSString *URLString = URL.absoluteString;
+
+    for (MTMockResponse *response in [self allMockResponses]) {
+        if ([response.URL.absoluteString isEqual:URLString]) {
+            [responses addObject:response];
+        } else if ([response.URLRegularExpression rangeOfFirstMatchInString:URLString options:0 range:NSMakeRange(0, URLString.length)].length > 0) {
+            [responses addObject:response];
+        } else if ([response canUseWithURL:URL]) {
+            [responses addObject:response];
+        }
+    }
+
+    return [responses copy];
+}
+
++ (NSMutableArray *)allMockResponses;
+{
+    static NSMutableArray *allMockResponses = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        allMockResponses = [[NSMutableArray alloc] init];
+    });
+
+    return allMockResponses;
+}
+
 #pragma mark - Public Methods
 
-- (NSData *)augmentedResponseData:(NSData *)response;
+- (void)augmentResponseBody:(NSMutableData *)responseBody;
 {
-    return response;
+    // For subclasses.
+}
+
+- (void)augmentResponseHeaders:(NSMutableDictionary *)responseHeaders;
+{
+    // For subclasses.    
+}
+
+- (BOOL)canUseWithURL:(NSURL *)URL;
+{
+    return NO;
 }
 
 @end

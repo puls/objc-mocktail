@@ -10,4 +10,9 @@
 
 @interface MTMockController : NSObject
 
+@property (nonatomic, assign, readonly, getter=isMockingNetworkResponses) BOOL mockingNetworkResponses;
+
+- (void)startMockingNetworkResponses;
+- (void)stopMockingNetworkResponses;
+
 @end

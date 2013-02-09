@@ -13,13 +13,49 @@
  */
 @interface MTMockResponse : NSObject
 
-/**
- */
-@property (nonatomic, assign) NSInteger errorCode;
+///
+/// @name HTTP Fields
+///
 
 /**
  */
-@property (nonatomic, assign) NSTimeInterval latency;
+@property (nonatomic, copy) NSData *defaultResponseBody;
+
+/**
+ */
+@property (nonatomic, copy) NSDictionary *defaultResponseHeaders;
+
+/**
+ */
+@property (nonatomic, retain) NSError *HTTPError;
+
+/**
+ */
+@property (nonatomic, copy) NSDictionary *HTTPHeaderFields;
+
+/**
+ */
+@property (nonatomic, copy) NSString *HTTPRequestMethod;
+
+/**
+ */
+@property (nonatomic, assign) NSInteger HTTPStatusCode;
+
+///
+/// @name Response Configuration
+///
+
+/**
+ */
+@property (nonatomic, assign) BOOL fetchesResponsesFromRealEndpoint;
+
+/**
+ */
+@property (nonatomic, assign) NSTimeInterval responseLatency;
+
+///
+/// @name URL Matching
+///
 
 /**
  */
@@ -46,12 +82,33 @@
 + (NSArray *)mockResponsesWithContentsOfDirectoryAtURL:(NSURL *)directoryURL;
 
 
+/**
+ */
++ (instancetype)mockResponseForURL:(NSURL *)URL HTTPRequestMethod:(NSString *)requestMethod;
+
+/**
+ */
++ (NSArray *)mockResponsesForURL:(NSURL *)URL HTTPRequestMethod:(NSString *)requestMethod;
+
+/**
+ */
++ (NSMutableArray *)allMockResponses;
+
+
 ///
 /// @name Instance Methods
 ///
 
 /**
  */
-- (NSData *)augmentedResponseData:(NSData *)response;
+- (void)augmentResponseBody:(NSMutableData *)responseBody;
+
+/**
+ */
+- (void)augmentResponseHeaders:(NSMutableDictionary *)responseHeaders;
+
+/**
+ */
+- (BOOL)canUseWithURL:(NSURL *)URL;
 
 @end
