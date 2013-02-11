@@ -29,7 +29,7 @@ The directory could be inside your app bundle (if you're supporting a test suite
 
 I wish there were a standard for this, but alas, that's not to be the case. ([HAR](http://www.softwareishard.com/blog/har-12-spec/) thought it was going to be up to the task, but it's for forensic analysis of what happened during requests, not what came back.)
 
-So we made one up. It's newline-delimited.
+So we made one up. It's newline-delimited and it has the file-extension `.tail`.
 
 **Line 1** is a regular expression that matches the HTTP method. Something like `GET` or `GET|POST` or `.*` will work.
 

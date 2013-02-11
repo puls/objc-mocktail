@@ -9,6 +9,7 @@
 
 #import "Mocktail.h"
 
+static NSString * const MocktailFileExtension = @".tail";
 
 @interface MocktailResponse : NSObject
 
@@ -48,6 +49,11 @@ static NSMutableArray *mockReponses = nil;
         return;
     }
     for (NSURL *fileURL in fileURLs) {
+        NSRange fileExtenstionLocation = [[fileURL absoluteString] rangeOfString:MocktailFileExtension];
+        if (fileExtenstionLocation.location != [[fileURL absoluteString] length] - [MocktailFileExtension length]) {
+            continue;
+        }
+
         NSStringEncoding originalEncoding;
         NSString *contentsOfFile = [NSString stringWithContentsOfURL:fileURL usedEncoding:&originalEncoding error:&error];
         if (error) {
