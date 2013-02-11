@@ -21,7 +21,7 @@ No, really, it's cool, you can still use it! You can read the entire source code
 
     + (void)startWithContentsOfDirectoryAtURL:(NSURL *)url;
 
-All you do is put a bunch of files in a particular format (more on that later) in a directory and pass the URL of that directory to Mocktail. Et voilà.
+All you do is put a bunch of files in a particular format (more on that later) and a `.tail` file extension in a directory and pass the URL of that directory to Mocktail. Et voilà.
 
 The directory could be inside your app bundle (if you're supporting a test suite, say) or you could be really lazy about it if you're running in the simulator and just set the directory URL to a folder on your desktop.
 
