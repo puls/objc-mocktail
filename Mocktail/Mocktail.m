@@ -49,7 +49,7 @@ static NSMutableArray *mockReponses = nil;
         return;
     }
     for (NSURL *fileURL in fileURLs) {
-        if ([[fileURL absoluteString] hasSuffix:MocktailFileExtension]) {
+        if (![[fileURL absoluteString] hasSuffix:MocktailFileExtension]) {
             continue;
         }
 
