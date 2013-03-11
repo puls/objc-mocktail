@@ -6,41 +6,128 @@
 //  Licensed to Square, Inc. under one or more contributor license agreements.
 //  See the LICENSE file distributed with this work for the terms under
 //  which Square, Inc. licenses this file to you.
+//
 
 #import "Mocktail.h"
+#import "MocktailResponse.h"
+#import "MocktailURLProtocol.h"
+
 
 static NSString * const MocktailFileExtension = @".tail";
 
-@interface MocktailResponse : NSObject
 
-@property (nonatomic, strong) NSRegularExpression *methodRegex;
-@property (nonatomic, strong) NSRegularExpression *absoluteURLRegex;
-@property (nonatomic, strong) NSURL *fileURL;
-@property (nonatomic) NSInteger bodyOffset;
-@property (nonatomic, strong) NSDictionary *headers;
-@property (nonatomic) NSInteger statusCode;
+@interface Mocktail ()
 
-@end
+@property (nonatomic, strong) NSMutableDictionary *mutablePlaceholderValues;
+@property (nonatomic, strong) NSMutableSet *mutableMockResponses;
 
-
-@implementation MocktailResponse
 @end
 
 
 @implementation Mocktail
 
-static NSMutableArray *mockReponses = nil;
-
 #pragma mark - Mocktail
 
-+ (void)startWithContentsOfDirectoryAtURL:(NSURL *)url;
++ (instancetype)sharedMocktail;
 {
+    static Mocktail *sharedMocktail;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [NSURLProtocol registerClass:[self class]];
-        mockReponses = [NSMutableArray array];
+        sharedMocktail = [[Mocktail alloc] init];
     });
+    return sharedMocktail;
+}
+
+- (id)init;
+{
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
     
+    _mutableMockResponses = [[NSMutableSet alloc] init];
+    _mutablePlaceholderValues = [[NSMutableDictionary alloc] init];
+    _networkDelay = 0.0;
+    
+    return self;
+}
+
+#pragma mark - Accessors/Mutators
+
+- (NSDictionary *)placeholderValues;
+{
+    NSDictionary *placeholderValues;
+    @synchronized (_mutablePlaceholderValues) {
+        placeholderValues = [self.mutablePlaceholderValues copy];
+    }
+    return placeholderValues;
+}
+
+- (void)setValue:(NSString *)value forPlaceholder:(NSString *)placeholder;
+{
+    @synchronized (_mutablePlaceholderValues) {
+        [_mutablePlaceholderValues setObject:value forKey:placeholder];
+    }
+}
+
+- (NSString *)valueForPlaceholder:(NSString *)placeholder;
+{
+    NSString *value;
+    @synchronized (_mutablePlaceholderValues) {
+        value = [[_mutablePlaceholderValues objectForKey:placeholder] copy];
+    }
+    return value;
+}
+
+- (NSSet *)mockResponses;
+{
+    NSSet *mockResponses;
+    @synchronized (_mutableMockResponses) {
+        mockResponses = [_mutableMockResponses copy];
+    }
+    return mockResponses;
+}
+
+- (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method;
+{
+    NSAssert(url && method, @"Expected a valid URL and method.");
+    
+    NSString *absoluteURL = [url absoluteString];
+    for (MocktailResponse *response in self.mockResponses) {
+        if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
+            if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {
+                return response;
+            }
+        }
+    }
+    
+    return nil;
+}
+
+- (void)start;
+{
+    if (self.started) {
+        return;
+    }
+    
+    [NSURLProtocol registerClass:[self class]];
+    self.started = YES;
+}
+
+- (void)stop;
+{
+    if (!self.started) {
+        return;
+    }
+    
+    [NSURLProtocol unregisterClass:[self class]];
+    self.started = NO;
+}
+
+#pragma mark - Actions
+
+- (void)registerContentsOfDirectoryAtURL:(NSURL *)url;
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error = nil;
     NSArray *fileURLs = [fileManager contentsOfDirectoryAtURL:url includingPropertiesForKeys:nil options:0 error:&error];
@@ -48,79 +135,49 @@ static NSMutableArray *mockReponses = nil;
         NSLog(@"Error opening %@: %@", url, error);
         return;
     }
+    
     for (NSURL *fileURL in fileURLs) {
         if (![[fileURL absoluteString] hasSuffix:MocktailFileExtension]) {
             continue;
         }
 
-        NSStringEncoding originalEncoding;
-        NSString *contentsOfFile = [NSString stringWithContentsOfURL:fileURL usedEncoding:&originalEncoding error:&error];
-        if (error) {
-            NSLog(@"Error opening %@: %@", fileURL, error);
-        }
-        NSScanner *scanner = [NSScanner scannerWithString:contentsOfFile];
-        NSString *headerMatter = nil;
-        [scanner scanUpToString:@"\n\n" intoString:&headerMatter];
-        NSArray *lines = [headerMatter componentsSeparatedByString:@"\n"];
-        MocktailResponse *response = [MocktailResponse new];
-        response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
-        response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
-        response.statusCode = [lines[2] integerValue];
-        response.headers = @{@"Content-type":lines[3]};
-        response.fileURL = fileURL;
-        response.bodyOffset = [headerMatter dataUsingEncoding:originalEncoding].length + 2;
-        @synchronized(mockReponses) {
-            [mockReponses addObject:response];
-        }
+        [self registerFileAtURL:fileURL];
     }
 }
 
-+ (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method;
+- (void)registerFileAtURL:(NSURL *)url;
 {
-    NSString *absoluteURL = [url absoluteString];
-    @synchronized(mockReponses) {
-        for (MocktailResponse *response in mockReponses) {
-            if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
-                if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {
-                    return response;
-                }
-            }
-        }
+    NSAssert(url, @"Expected valid URL.");
+    
+    NSError *error;
+    NSStringEncoding originalEncoding;
+    NSString *contentsOfFile = [NSString stringWithContentsOfURL:url usedEncoding:&originalEncoding error:&error];
+    if (error) {
+        NSLog(@"Error opening %@: %@", url, error);
+        return;
     }
-    return nil;
-}
-
-#pragma mark - NSURLProtocol
-
-+ (BOOL)canInitWithRequest:(NSURLRequest *)request;
-{
-    return !![self mockResponseForURL:request.URL method:request.HTTPMethod];
-}
-
-+ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request;
-{
-    return request;
-}
-
-+ (BOOL)requestIsCacheEquivalent:(NSURLRequest *)a toRequest:(NSURLRequest *)b;
-{
-    return NO;
-}
-
-- (void)startLoading;
-{
-    MocktailResponse *response = [[self class] mockResponseForURL:self.request.URL method:self.request.HTTPMethod];
-    NSData *body = [NSData dataWithContentsOfURL:response.fileURL];
-    body = [body subdataWithRange:NSMakeRange(response.bodyOffset, body.length - response.bodyOffset)];
-    NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode:response.statusCode HTTPVersion:@"1.1" headerFields:response.headers];
-    [self.client URLProtocol:self didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
-    [self.client URLProtocol:self didLoadData:body];
-    [self.client URLProtocolDidFinishLoading:self];
-}
-
-- (void)stopLoading;
-{
-    // Mocktail "loads" requests and sends back data synchronously, so there's no point at which a request has started but hasn't finished. An implementation of this method would be meaningless.
+    
+    NSScanner *scanner = [NSScanner scannerWithString:contentsOfFile];
+    NSString *headerMatter = nil;
+    [scanner scanUpToString:@"\n\n" intoString:&headerMatter];
+    NSArray *lines = [headerMatter componentsSeparatedByString:@"\n"];
+    if ([lines count] < 4) {
+        NSLog(@"Invalid amount of lines: %u", (unsigned)[lines count]);
+        return;
+    }
+    
+    MocktailResponse *response = [MocktailResponse new];
+    response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
+    response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
+    response.statusCode = [lines[2] integerValue];
+    response.headers = @{@"Content-type":lines[3]};
+    response.fileURL = url;
+    response.bodyOffset = [headerMatter dataUsingEncoding:originalEncoding].length + 2;
+    
+    @synchronized (_mutableMockResponses) {
+        [_mutableMockResponses addObject:response];
+    }
 }
 
 @end
+
