@@ -7,12 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39F1B1F216EE98EF00D05B96 /* MocktailResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F1B1EE16EE98EF00D05B96 /* MocktailResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F1B1F316EE98EF00D05B96 /* MocktailResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */; };
+		39F1B1F416EE98EF00D05B96 /* MocktailURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F1B1F016EE98EF00D05B96 /* MocktailURLProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F1B1F516EE98EF00D05B96 /* MocktailURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F1B1F116EE98EF00D05B96 /* MocktailURLProtocol.m */; };
 		A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A822634116C45BC4007C81BC /* Foundation.framework */; };
 		A822634916C45BC4007C81BC /* Mocktail.m in Sources */ = {isa = PBXBuildFile; fileRef = A822634816C45BC4007C81BC /* Mocktail.m */; };
 		A822635016C45D9E007C81BC /* Mocktail.h in Headers */ = {isa = PBXBuildFile; fileRef = A822634616C45BC4007C81BC /* Mocktail.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		39F1B1EE16EE98EF00D05B96 /* MocktailResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MocktailResponse.h; sourceTree = "<group>"; };
+		39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MocktailResponse.m; sourceTree = "<group>"; };
+		39F1B1F016EE98EF00D05B96 /* MocktailURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MocktailURLProtocol.h; sourceTree = "<group>"; };
+		39F1B1F116EE98EF00D05B96 /* MocktailURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MocktailURLProtocol.m; sourceTree = "<group>"; };
 		A822633E16C45BC4007C81BC /* libMocktail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMocktail.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A822634116C45BC4007C81BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A822634516C45BC4007C81BC /* Mocktail-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mocktail-Prefix.pch"; sourceTree = "<group>"; };
@@ -62,6 +70,10 @@
 			children = (
 				A822634616C45BC4007C81BC /* Mocktail.h */,
 				A822634816C45BC4007C81BC /* Mocktail.m */,
+				39F1B1EE16EE98EF00D05B96 /* MocktailResponse.h */,
+				39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */,
+				39F1B1F016EE98EF00D05B96 /* MocktailURLProtocol.h */,
+				39F1B1F116EE98EF00D05B96 /* MocktailURLProtocol.m */,
 				A822634416C45BC4007C81BC /* Supporting Files */,
 			);
 			path = Mocktail;
@@ -83,6 +95,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A822635016C45D9E007C81BC /* Mocktail.h in Headers */,
+				39F1B1F216EE98EF00D05B96 /* MocktailResponse.h in Headers */,
+				39F1B1F416EE98EF00D05B96 /* MocktailURLProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +152,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A822634916C45BC4007C81BC /* Mocktail.m in Sources */,
+				39F1B1F316EE98EF00D05B96 /* MocktailResponse.m in Sources */,
+				39F1B1F516EE98EF00D05B96 /* MocktailURLProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +223,7 @@
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${TARGET_NAME}";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -219,6 +236,7 @@
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${TARGET_NAME}";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
