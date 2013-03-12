@@ -179,5 +179,13 @@ static NSString * const MocktailFileExtension = @".tail";
     }
 }
 
-@end
+#pragma mark - Deprecated Methods
 
++ (void)startWithContentsOfDirectoryAtURL:(NSURL *)url
+{
+    Mocktail *mocktail = [self sharedMocktail];
+    [mocktail registerContentsOfDirectoryAtURL:url];
+    [mocktail start];
+}
+
+@end

@@ -33,4 +33,9 @@
 
 - (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method;
 
+
+/// @name Deprecated Methods
+
++ (void)startWithContentsOfDirectoryAtURL:(NSURL *)url __attribute__((deprecated("Use +sharedMocktail, -registerContentsOfDirectoryAtURL: and -start instead.")));
+
 @end
