@@ -223,6 +223,7 @@
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${TARGET_NAME}";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -235,6 +236,7 @@
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${TARGET_NAME}";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

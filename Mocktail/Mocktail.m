@@ -110,7 +110,7 @@ static NSString * const MocktailFileExtension = @".tail";
         return;
     }
     
-    [NSURLProtocol registerClass:[self class]];
+    [NSURLProtocol registerClass:[MocktailURLProtocol class]];
     self.started = YES;
 }
 
@@ -120,7 +120,7 @@ static NSString * const MocktailFileExtension = @".tail";
         return;
     }
     
-    [NSURLProtocol unregisterClass:[self class]];
+    [NSURLProtocol unregisterClass:[MocktailURLProtocol class]];
     self.started = NO;
 }
 
