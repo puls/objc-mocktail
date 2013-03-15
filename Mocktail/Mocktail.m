@@ -9,6 +9,7 @@
 //
 
 #import "Mocktail.h"
+#import "Mocktail_Private.h"
 #import "MocktailResponse.h"
 #import "MocktailURLProtocol.h"
 
@@ -26,16 +27,24 @@ static NSString * const MocktailFileExtension = @".tail";
 
 @implementation Mocktail
 
-#pragma mark - Mocktail
+static NSMutableSet *_allMocktails;
 
-+ (instancetype)sharedMocktail;
++ (NSMutableSet *)allMocktails;
 {
-    static Mocktail *sharedMocktail;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedMocktail = [[Mocktail alloc] init];
+        _allMocktails = [NSMutableSet new];
     });
-    return sharedMocktail;
+    
+    return _allMocktails;
+}
+
++ (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url
+{
+    Mocktail *mocktail = [self new];
+    [mocktail registerContentsOfDirectoryAtURL:url];
+    [mocktail start];
+    return mocktail;
 }
 
 - (id)init;
@@ -63,18 +72,18 @@ static NSString * const MocktailFileExtension = @".tail";
     return placeholderValues;
 }
 
-- (void)setValue:(NSString *)value forPlaceholder:(NSString *)placeholder;
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)aKey
 {
     @synchronized (_mutablePlaceholderValues) {
-        [_mutablePlaceholderValues setObject:value forKey:placeholder];
+        [_mutablePlaceholderValues setObject:object forKey:aKey];
     }
 }
 
-- (NSString *)valueForPlaceholder:(NSString *)placeholder;
+- (id)objectForKeyedSubscript:(id<NSCopying>)aKey;
 {
     NSString *value;
     @synchronized (_mutablePlaceholderValues) {
-        value = [[_mutablePlaceholderValues objectForKey:placeholder] copy];
+        value = [[_mutablePlaceholderValues objectForKey:aKey] copy];
     }
     return value;
 }
@@ -88,15 +97,17 @@ static NSString * const MocktailFileExtension = @".tail";
     return mockResponses;
 }
 
-- (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method;
++ (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method;
 {
     NSAssert(url && method, @"Expected a valid URL and method.");
     
     NSString *absoluteURL = [url absoluteString];
-    for (MocktailResponse *response in self.mockResponses) {
-        if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
-            if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {
-                return response;
+    for (Mocktail *mocktail in [Mocktail allMocktails]) {
+        for (MocktailResponse *response in mocktail.mockResponses) {
+            if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
+                if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {
+                    return response;
+                }
             }
         }
     }
@@ -106,25 +117,27 @@ static NSString * const MocktailFileExtension = @".tail";
 
 - (void)start;
 {
-    if (self.started) {
-        return;
-    }
+    NSAssert([NSThread isMainThread], @"Please start and stop Mocktail from the main thread");
+    NSAssert(![[Mocktail allMocktails] containsObject:self], @"Tried to start Mocktail twice");
     
-    [NSURLProtocol registerClass:[MocktailURLProtocol class]];
-    self.started = YES;
+    if ([Mocktail allMocktails].count == 0) {
+        [NSURLProtocol registerClass:[MocktailURLProtocol class]];
+    }
+    [[Mocktail allMocktails] addObject:self];
 }
 
 - (void)stop;
 {
-    if (!self.started) {
-        return;
-    }
+    NSAssert([NSThread isMainThread], @"Please start and stop Mocktail from the main thread");
+    NSAssert([[Mocktail allMocktails] containsObject:self], @"Tried to stop unstarted Mocktail");
     
-    [NSURLProtocol unregisterClass:[MocktailURLProtocol class]];
-    self.started = NO;
+    [[Mocktail allMocktails] removeObject:self];
+    if ([Mocktail allMocktails].count == 0) {
+        [NSURLProtocol unregisterClass:[MocktailURLProtocol class]];
+    }
 }
 
-#pragma mark - Actions
+#pragma mark - Parsing files
 
 - (void)registerContentsOfDirectoryAtURL:(NSURL *)url;
 {
@@ -167,6 +180,7 @@ static NSString * const MocktailFileExtension = @".tail";
     }
     
     MocktailResponse *response = [MocktailResponse new];
+    response.mocktail = self;
     response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
     response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
     response.statusCode = [lines[2] integerValue];
@@ -177,15 +191,6 @@ static NSString * const MocktailFileExtension = @".tail";
     @synchronized (_mutableMockResponses) {
         [_mutableMockResponses addObject:response];
     }
-}
-
-#pragma mark - Deprecated Methods
-
-+ (void)startWithContentsOfDirectoryAtURL:(NSURL *)url
-{
-    Mocktail *mocktail = [self sharedMocktail];
-    [mocktail registerContentsOfDirectoryAtURL:url];
-    [mocktail start];
 }
 
 @end

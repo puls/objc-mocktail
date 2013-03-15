@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		39F1B1F216EE98EF00D05B96 /* MocktailResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F1B1EE16EE98EF00D05B96 /* MocktailResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F1B1F216EE98EF00D05B96 /* MocktailResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F1B1EE16EE98EF00D05B96 /* MocktailResponse.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		39F1B1F316EE98EF00D05B96 /* MocktailResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */; };
-		39F1B1F416EE98EF00D05B96 /* MocktailURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F1B1F016EE98EF00D05B96 /* MocktailURLProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39F1B1F416EE98EF00D05B96 /* MocktailURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F1B1F016EE98EF00D05B96 /* MocktailURLProtocol.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		39F1B1F516EE98EF00D05B96 /* MocktailURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F1B1F116EE98EF00D05B96 /* MocktailURLProtocol.m */; };
 		A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A822634116C45BC4007C81BC /* Foundation.framework */; };
 		A822634916C45BC4007C81BC /* Mocktail.m in Sources */ = {isa = PBXBuildFile; fileRef = A822634816C45BC4007C81BC /* Mocktail.m */; };
 		A822635016C45D9E007C81BC /* Mocktail.h in Headers */ = {isa = PBXBuildFile; fileRef = A822634616C45BC4007C81BC /* Mocktail.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A87D2F2316F3B6B700B594D6 /* Mocktail_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = A87D2F2216F3B6B700B594D6 /* Mocktail_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		A822634516C45BC4007C81BC /* Mocktail-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mocktail-Prefix.pch"; sourceTree = "<group>"; };
 		A822634616C45BC4007C81BC /* Mocktail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mocktail.h; sourceTree = "<group>"; };
 		A822634816C45BC4007C81BC /* Mocktail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mocktail.m; sourceTree = "<group>"; };
+		A87D2F2216F3B6B700B594D6 /* Mocktail_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mocktail_Private.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				A822634616C45BC4007C81BC /* Mocktail.h */,
+				A87D2F2216F3B6B700B594D6 /* Mocktail_Private.h */,
 				A822634816C45BC4007C81BC /* Mocktail.m */,
 				39F1B1EE16EE98EF00D05B96 /* MocktailResponse.h */,
 				39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */,
@@ -97,10 +100,28 @@
 				A822635016C45D9E007C81BC /* Mocktail.h in Headers */,
 				39F1B1F216EE98EF00D05B96 /* MocktailResponse.h in Headers */,
 				39F1B1F416EE98EF00D05B96 /* MocktailURLProtocol.h in Headers */,
+				A87D2F2316F3B6B700B594D6 /* Mocktail_Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
+
+/* Begin PBXLegacyTarget section */
+		A87D2F2416F3C51000B594D6 /* Mocktail Documentation */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "--exit-threshold 2 --logformat xcode --output /tmp/tsq-docs --project-name Mocktail --project-version 1.0 --project-company \"Square, Inc.\" --company-id com.squareup --no-repeat-first-par --no-search-undocumented-doc Mocktail/";
+			buildConfigurationList = A87D2F2516F3C51000B594D6 /* Build configuration list for PBXLegacyTarget "Mocktail Documentation" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/local/bin/appledoc;
+			buildWorkingDirectory = "";
+			dependencies = (
+			);
+			name = "Mocktail Documentation";
+			passBuildSettingsInEnvironment = 0;
+			productName = "Mocktail Documentation";
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		A822633D16C45BC4007C81BC /* Mocktail */ = {
@@ -142,6 +163,7 @@
 			projectRoot = "";
 			targets = (
 				A822633D16C45BC4007C81BC /* Mocktail */,
+				A87D2F2416F3C51000B594D6 /* Mocktail Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -223,7 +245,6 @@
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${TARGET_NAME}";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -236,8 +257,39 @@
 				GCC_PREFIX_HEADER = "Mocktail/Mocktail-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "/usr/local/include/${TARGET_NAME}";
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		A87D2F2616F3C51000B594D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEBUGGING_SYMBOLS = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A87D2F2716F3C51000B594D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -261,6 +313,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		A87D2F2516F3C51000B594D6 /* Build configuration list for PBXLegacyTarget "Mocktail Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A87D2F2616F3C51000B594D6 /* Debug */,
+				A87D2F2716F3C51000B594D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

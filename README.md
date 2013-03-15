@@ -17,9 +17,9 @@ You shouldn't ship Mocktail with your code. It's a development tool.
 
 ## Usage
 
-No, really, it's cool, you can still use it! You can read the entire source code in about five minutes to see what's going on. The entire API is a single method:
+No, really, it's cool, you can still use it! You can read the entire source code in about five minutes to see what's going on. The important API is a single method:
 
-    + (void)startWithContentsOfDirectoryAtURL:(NSURL *)url;
+    + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url;
 
 All you do is put a bunch of files in a particular format (more on that later) and a `.tail` file extension in a directory and pass the URL of that directory to Mocktail. Et voilà.
 
@@ -41,7 +41,25 @@ So we made one up. It's newline-delimited.
 
 **Line 5** is blank.
 
-Everything after the newline ending line 5 (that is to say, line 6 and on) is sent back as the response body, verbatim. It doesn't even matter what the filename is. You just use one of these files per mock response "endpoint" and Mocktail loads them all in.
+Everything after the newline ending line 5 (that is to say, line 6 and on) is sent back as the response body, verbatim. Unless you use the placeholder support, but more on that later.
+It doesn't even matter what the filename is as long as it ends in `.tail`. You just use one of these files per mock response "endpoint" and Mocktail loads them all in.
+
+## Placeholder support
+
+Oh, so you wanted your mock responses to be smarter? That's not very slacker-like.
+
+Here's whatcha do.
+
+**1.** Keep track of that object you got back from calling `startWithContentsOfDirectoryAtURL:`
+
+**2.** Add a template tag to your mock response:
+    {{ foo }}
+
+**3.** Use that nifty Objective-C key-value setting syntax to set some keys and values:
+    Mocktail *mocktail = [Mocktail startWithContentsOfDirectoryAtURL:url];
+    mocktail[@"foo"] = @"bar";
+
+**4.** There is no step 7.
 
 ## Mad props
 
