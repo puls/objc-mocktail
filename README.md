@@ -53,9 +53,11 @@ Here's whatcha do.
 **1.** Keep track of that object you got back from calling `startWithContentsOfDirectoryAtURL:`
 
 **2.** Add a template tag to your mock response:
+
     {{ foo }}
 
 **3.** Use that nifty Objective-C key-value setting syntax to set some keys and values:
+
     Mocktail *mocktail = [Mocktail startWithContentsOfDirectoryAtURL:url];
     mocktail[@"foo"] = @"bar";
 
