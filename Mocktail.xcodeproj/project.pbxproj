@@ -70,8 +70,8 @@
 		A822634316C45BC4007C81BC /* Mocktail */ = {
 			isa = PBXGroup;
 			children = (
-				A822634616C45BC4007C81BC /* Mocktail.h */,
 				A87D2F2216F3B6B700B594D6 /* Mocktail_Private.h */,
+				A822634616C45BC4007C81BC /* Mocktail.h */,
 				A822634816C45BC4007C81BC /* Mocktail.m */,
 				39F1B1EE16EE98EF00D05B96 /* MocktailResponse.h */,
 				39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */,
@@ -321,6 +321,7 @@
 				A87D2F2716F3C51000B594D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
