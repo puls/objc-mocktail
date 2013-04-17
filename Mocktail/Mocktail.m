@@ -182,6 +182,7 @@ static NSMutableSet *_allMocktails;
     MocktailResponse *response = [MocktailResponse new];
     response.mocktail = self;
     response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
+    // --
     NSString *escapedURL  = [NSRegularExpression escapedPatternForString:lines[1]] ;
     response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:escapedURL options:NSRegularExpressionCaseInsensitive error:nil];
     response.statusCode = [lines[2] integerValue];
