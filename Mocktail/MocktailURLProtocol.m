@@ -44,25 +44,41 @@
     MocktailResponse *response = [Mocktail mockResponseForURL:self.request.URL method:self.request.HTTPMethod];
     Mocktail *mocktail = response.mocktail;
     NSAssert(response, @"Expected valid mock response");
-    NSData *body = [NSData dataWithContentsOfURL:response.fileURL];
+    __block NSData *body = [NSData dataWithContentsOfURL:response.fileURL];
     body = [body subdataWithRange:NSMakeRange(response.bodyOffset, body.length - response.bodyOffset)];
     
     // Replace placeholders with values. We transform the body data into a string for easier search and replace.
     NSDictionary *placeholderValues = mocktail.placeholderValues;
-    if ([placeholderValues count] > 0) {
-        NSMutableString *bodyString = [[NSMutableString alloc] initWithData:body encoding:NSUTF8StringEncoding];
-        BOOL didReplace = NO;
-        for (NSString *placeholder in placeholderValues) {
-            NSString *value = [placeholderValues objectForKey:placeholder];
-            NSString *placeholderFormat = [NSString stringWithFormat:@"{{ %@ }}", placeholder];
+    NSMutableString *bodyString = [[NSMutableString alloc] initWithData:body encoding:NSUTF8StringEncoding];
+    
+    NSRange emptyRange = [bodyString rangeOfString:@"{{"];
+    
+    if(emptyRange.location != NSNotFound)
+    {
+        if ([placeholderValues count] > 0) {
+            __block BOOL didReplace = NO;
+            [placeholderValues enumerateKeysAndObjectsUsingBlock:^ (id key, id obj, BOOL *stop) {
+                if ([key isEqualToString:@"image"]) {
+                    NSError *error;
+                    body = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:obj ofType:nil] options:NSDataReadingUncached error:&error];
+                    
+                    if (body == nil) {
+                        NSLog(@"Data Error: %@", error);
+                    }
+                }
+                
+                else{
+                    NSString *placeholderFormat = [NSString stringWithFormat:@"{{ %@ }}", key];
+                    
+                    if ([bodyString replaceOccurrencesOfString:placeholderFormat withString:obj options:NSLiteralSearch range:NSMakeRange(0, [bodyString length])] > 0) {
+                        didReplace = YES;
+                    }
+                }
+            }];
             
-            if ([bodyString replaceOccurrencesOfString:placeholderFormat withString:value options:NSLiteralSearch range:NSMakeRange(0, [bodyString length])] > 0) {
-                didReplace = YES;
+            if (didReplace) {
+                body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
             }
-        }
-        
-        if (didReplace) {
-            body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
         }
     }
     
