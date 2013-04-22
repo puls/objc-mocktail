@@ -44,30 +44,28 @@
     MocktailResponse *response = [Mocktail mockResponseForURL:self.request.URL method:self.request.HTTPMethod];
     Mocktail *mocktail = response.mocktail;
     NSAssert(response, @"Expected valid mock response");
-    __block NSData *body = [NSData dataWithContentsOfURL:response.fileURL];
+    NSData __block *body = [NSData dataWithContentsOfURL:response.fileURL];
     body = [body subdataWithRange:NSMakeRange(response.bodyOffset, body.length - response.bodyOffset)];
     
     // Replace placeholders with values. We transform the body data into a string for easier search and replace.
     NSDictionary *placeholderValues = mocktail.placeholderValues;
     NSMutableString *bodyString = [[NSMutableString alloc] initWithData:body encoding:NSUTF8StringEncoding];
     
-    NSRange emptyRange = [bodyString rangeOfString:@"{{"];
+    NSRange charactersInRange = [bodyString rangeOfString:@"{{"];
     
-    if(emptyRange.location != NSNotFound)
+    if (charactersInRange.location != NSNotFound)
     {
         if ([placeholderValues count] > 0) {
-            __block BOOL didReplace = NO;
-            [placeholderValues enumerateKeysAndObjectsUsingBlock:^ (id key, id obj, BOOL *stop) {
+            BOOL __block didReplace = NO;
+            [placeholderValues enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop) {
                 if ([key isEqualToString:@"image"]) {
                     NSError *error;
                     body = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:obj ofType:nil] options:NSDataReadingUncached error:&error];
                     
-                    if (body == nil) {
+                    if (!body) {
                         NSLog(@"Data Error: %@", error);
                     }
-                }
-                
-                else{
+                } else {
                     NSString *placeholderFormat = [NSString stringWithFormat:@"{{ %@ }}", key];
                     
                     if ([bodyString replaceOccurrencesOfString:placeholderFormat withString:obj options:NSLiteralSearch range:NSMakeRange(0, [bodyString length])] > 0) {
