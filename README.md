@@ -83,7 +83,7 @@ Here's whatcha do.
        mock[@"image1"] = image1;
        mock[@"image2"] = image2;
 
-**4.** Simply drag your images you want to mock to your app bundle and you are done.
+**4.** Drag the images who are expected to be mocked to the app bundle. That's it.
         
        
 ## Mad props
