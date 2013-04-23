@@ -61,8 +61,9 @@
             [placeholderValues enumerateKeysAndObjectsUsingBlock:^ (id key, id obj, BOOL *stop) {
                 if ([key isEqualToString:@"image"]) {
                     NSError *error;
-                    body = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:obj ofType:nil] options:NSDataReadingUncached error:&error];
-                    
+                    if([[NSBundle mainBundle] pathForResource:obj ofType:nil]){
+                        body = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:obj ofType:nil] options:NSDataReadingUncached error:&error];
+                    }
                     if (!body) {
                         NSLog(@"Data Error: %@", error);
                     }
