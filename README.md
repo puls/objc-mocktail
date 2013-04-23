@@ -37,12 +37,12 @@ So we made one up. It's newline-delimited.
 
 **Line 3** is the HTTP status code of the response. Probably `200`.
 
-**Line 4** is the HTTP/MIME content type of the content. `application/json; charset=utf-8` is a nice value for this line, as is `text/html`. Various types of images might work, I haven't tried them.
+**Line 4** is the HTTP/MIME content type of the content. `application/json; charset=utf-8` is a nice value for this line, as is `text/html`. If you want to send back binary data, your best bet is to suffix this line with `;base64` and then to Base64-encode the response body.
 
 **Line 5** is blank.
 
-Everything after the newline ending line 5 (that is to say, line 6 and on) is sent back as the response body, verbatim. Unless you use the placeholder support, but more on that later.
-It doesn't even matter what the filename is as long as it ends in `.tail`. You just use one of these files per mock response "endpoint" and Mocktail loads them all in.
+Everything after the newline ending line 5 (that is to say, line 6 and on) is sent back as the response body, either verbatim or Base64-decoded, depending on what you put on line 4. Unless you use the placeholder support, but more on that later.
+It doesn't even matter what the filename is as long as it ends in `.tail`. You just use one of these files per mock response "endpoint" and Mocktail loads them all in when you start it.
 
 ## Placeholder support
 
