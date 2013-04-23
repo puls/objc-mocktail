@@ -63,6 +63,29 @@ Here's whatcha do.
 
 **4.** There is no step 7.
 
+## Image support
+
+**1.** Keep track of that object you got back from calling `startWithContentsOfDirectoryAtURL:`
+
+**2.** Add this exact template tag to your mock response:
+	
+	{{ image }}
+
+**3.** Use MImage to define your image's name and image's URL along with that nifty Objective-C key-value setting syntax to set some keys and values:
+       
+       Example:
+       
+       Mocktail *mock = [Mocktail startWithContentsOfDirectoryAtURL:[[NSBundle mainBundle] resourceURL]];
+       MImage *image1 = [[MImage alloc] initWithValues:@"imageName1.png" imageURL:@"http://someURL/imageName1.png"];
+       MImage *image2 = [[MImage alloc] initWithValues:@"imageName2.png" imageURL:@"http://anotherURL/imageName2.png"];
+       
+       NOTE: The key MUST start with the word "image" and cannot repeat as the same name:
+       mock[@"image1"] = image1;
+       mock[@"image2"] = image2;
+
+**4.** Simply drag your images you want to mock to your app bundle and you are done.
+        
+       
 ## Mad props
 
 While `NSURLProtocol` has been around forever, its uses aren't obvious unless you read things like [@mattt](http://github.com/mattt)'s awesome [NSHipster blog post on the subject](http://nshipster.com/nsurlprotocol/). If you don't read NSHipster, you're missing out. It's great.
