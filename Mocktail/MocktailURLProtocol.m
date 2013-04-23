@@ -11,6 +11,8 @@
 #import "MocktailURLProtocol.h"
 #import "Mocktail_Private.h"
 #import "MocktailResponse.h"
+#import "MImage.h"
+
 
 
 @interface MocktailURLProtocol ()
@@ -49,42 +51,40 @@
     
     // Replace placeholders with values. We transform the body data into a string for easier search and replace.
     NSDictionary *placeholderValues = mocktail.placeholderValues;
-    NSMutableString *bodyString = [[NSMutableString alloc] initWithData:body encoding:NSUTF8StringEncoding];
-    
-    NSRange emptyRange = [bodyString rangeOfString:@"{{"];
-    
-    if (emptyRange.location != NSNotFound)
-    {
-        if ([placeholderValues count] > 0) {
-            NSMutableString *bodyString = [[NSMutableString alloc] initWithData:body encoding:NSUTF8StringEncoding];
-            __block BOOL didReplace = NO;
-            [placeholderValues enumerateKeysAndObjectsUsingBlock:^ (id key, id obj, BOOL *stop) {
-                if ([key isEqualToString:@"image"]) {
-                    NSError *error;
-                    if([[NSBundle mainBundle] pathForResource:obj ofType:nil]){
-                        body = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:obj ofType:nil] options:NSDataReadingUncached error:&error];
-                    }
-                    if (!body) {
-                        NSLog(@"Data Error: %@", error);
-                    }
-                } else {
-                    NSString *placeholderFormat = [NSString stringWithFormat:@"{{ %@ }}", key];
-                    
-                    if ([bodyString replaceOccurrencesOfString:placeholderFormat withString:obj options:NSLiteralSearch range:NSMakeRange(0, [bodyString length])] > 0) {
-                        didReplace = YES;
+    if ([placeholderValues count] > 0) {
+        NSMutableString *bodyString = [[NSMutableString alloc] initWithData:body encoding:NSUTF8StringEncoding];
+        __block BOOL didReplace = NO;
+        [placeholderValues enumerateKeysAndObjectsUsingBlock:^ (id key, id obj, BOOL *stop) {
+            if ([key hasPrefix:@"image"]) {
+                if([[NSBundle mainBundle] pathForResource:((MImage *)obj).imageName ofType:nil]){
+                    if ([[self.request.URL absoluteString] isEqual:((MImage *)obj).imageURL]) {
+                        NSError *error;
+                        if ([bodyString isEqual:@"{{ image }}"]){
+                            body = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((MImage *)obj).imageName ofType:nil] options:NSDataReadingUncached error:&error];
+                        }
+                        if (!body) {
+                            NSLog(@"Data Error: %@", error);
+                        }
                     }
                 }
-            }];
-            
-            if (didReplace) {
-                body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+                
+            } else {
+                NSString *placeholderFormat = [NSString stringWithFormat:@"{{ %@ }}", key];
+                
+                if ([bodyString replaceOccurrencesOfString:placeholderFormat withString:obj options:NSLiteralSearch range:NSMakeRange(0, [bodyString length])] > 0) {
+                    didReplace = YES;
+                }
             }
-        } else if ([response.headers[@"Content-Type"] hasSuffix:@";base64"]) {
-            NSString *type = response.headers[@"Content-Type"];
-            NSString *newType = [type substringWithRange:NSMakeRange(0, type.length - 7)];
-            response.headers = @{@"Content-Type":newType};
-            body = [self dataByDecodingBase64Data:body];
+        }];
+        
+        if (didReplace) {
+            body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
         }
+    } else if ([response.headers[@"Content-Type"] hasSuffix:@";base64"]) {
+        NSString *type = response.headers[@"Content-Type"];
+        NSString *newType = [type substringWithRange:NSMakeRange(0, type.length - 7)];
+        response.headers = @{@"Content-Type":newType};
+        body = [self dataByDecodingBase64Data:body];
     }
     
     NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode:response.statusCode HTTPVersion:@"1.1" headerFields:response.headers];
