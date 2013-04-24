@@ -38,13 +38,13 @@
  
  @param aKey The key to replace in `.tail` files
  */
-- (NSString *)objectForKeyedSubscript:(NSString *)aKey;
+- (id)objectForKeyedSubscript:(NSString *)aKey;
 
 /** Sets the placeholder value for a given key
  
  @param object The placeholder value, probably a string.
  @param aKey The key to replace in `.tail` files
  */
-- (void)setObject:(NSString *)object forKeyedSubscript:(NSString *)aKey;
+- (void)setObject:(id)object forKeyedSubscript:(NSString *)aKey;
 
 @end
