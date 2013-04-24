@@ -311,7 +311,7 @@
 				A822634B16C45BC4007C81BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A822634C16C45BC4007C81BC /* Build configuration list for PBXNativeTarget "Mocktail" */ = {
 			isa = XCConfigurationList;
@@ -320,7 +320,7 @@
 				A822634E16C45BC4007C81BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A87D2F2516F3C51000B594D6 /* Build configuration list for PBXLegacyTarget "Mocktail Documentation" */ = {
 			isa = XCConfigurationList;
@@ -329,7 +329,7 @@
 				A87D2F2716F3C51000B594D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
