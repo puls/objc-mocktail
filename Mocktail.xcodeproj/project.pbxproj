@@ -15,6 +15,8 @@
 		A822634916C45BC4007C81BC /* Mocktail.m in Sources */ = {isa = PBXBuildFile; fileRef = A822634816C45BC4007C81BC /* Mocktail.m */; };
 		A822635016C45D9E007C81BC /* Mocktail.h in Headers */ = {isa = PBXBuildFile; fileRef = A822634616C45BC4007C81BC /* Mocktail.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A87D2F2316F3B6B700B594D6 /* Mocktail_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = A87D2F2216F3B6B700B594D6 /* Mocktail_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FECA012D1729B19800ED7F14 /* MImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FECA012B1729B19800ED7F14 /* MImage.h */; };
+		FECA012E1729B19800ED7F14 /* MImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FECA012C1729B19800ED7F14 /* MImage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		A822634616C45BC4007C81BC /* Mocktail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mocktail.h; sourceTree = "<group>"; };
 		A822634816C45BC4007C81BC /* Mocktail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Mocktail.m; sourceTree = "<group>"; };
 		A87D2F2216F3B6B700B594D6 /* Mocktail_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mocktail_Private.h; sourceTree = "<group>"; };
+		FECA012B1729B19800ED7F14 /* MImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MImage.h; sourceTree = "<group>"; };
+		FECA012C1729B19800ED7F14 /* MImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MImage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,8 @@
 		A822634316C45BC4007C81BC /* Mocktail */ = {
 			isa = PBXGroup;
 			children = (
+				FECA012B1729B19800ED7F14 /* MImage.h */,
+				FECA012C1729B19800ED7F14 /* MImage.m */,
 				A822634616C45BC4007C81BC /* Mocktail.h */,
 				A87D2F2216F3B6B700B594D6 /* Mocktail_Private.h */,
 				A822634816C45BC4007C81BC /* Mocktail.m */,
@@ -101,6 +107,7 @@
 				39F1B1F216EE98EF00D05B96 /* MocktailResponse.h in Headers */,
 				39F1B1F416EE98EF00D05B96 /* MocktailURLProtocol.h in Headers */,
 				A87D2F2316F3B6B700B594D6 /* Mocktail_Private.h in Headers */,
+				FECA012D1729B19800ED7F14 /* MImage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +183,7 @@
 				A822634916C45BC4007C81BC /* Mocktail.m in Sources */,
 				39F1B1F316EE98EF00D05B96 /* MocktailResponse.m in Sources */,
 				39F1B1F516EE98EF00D05B96 /* MocktailURLProtocol.m in Sources */,
+				FECA012E1729B19800ED7F14 /* MImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -282,6 +291,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -303,7 +313,7 @@
 				A822634B16C45BC4007C81BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A822634C16C45BC4007C81BC /* Build configuration list for PBXNativeTarget "Mocktail" */ = {
 			isa = XCConfigurationList;
@@ -312,7 +322,7 @@
 				A822634E16C45BC4007C81BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A87D2F2516F3C51000B594D6 /* Build configuration list for PBXLegacyTarget "Mocktail Documentation" */ = {
 			isa = XCConfigurationList;
@@ -321,6 +331,7 @@
 				A87D2F2716F3C51000B594D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
