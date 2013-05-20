@@ -33,7 +33,7 @@ So we made one up. It's newline-delimited.
 
 **Line 1** is a regular expression that matches the HTTP method. Something like `GET` or `GET|POST` or `.*` will work.
 
-**Line 2** is a regular expression that matches the full URL of the HTTP request. So something like `http://yourserver.com:1234/very/specific/path\?param1=value1` or maybe just `/partial/path/to/something/.*` is fine too.
+**Line 2** is a regular expression that matches the full URL of the HTTP request. So something like `http://yourserver.com:1234/very/specific/path\?param1=value1` or maybe just `/partial/path/to/something/.*` is fine too. It's possible to have more than one regular expression match the full URL (like http://yourserver.com:1234/path for a specific path and /.* to match everything else). If that happens, the longest regular expression is the one that matches.
 
 **Line 3** is the HTTP status code of the response. Probably `200`.
 
