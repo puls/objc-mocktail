@@ -100,19 +100,25 @@ static NSMutableSet *_allMocktails;
 + (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method;
 {
     NSAssert(url && method, @"Expected a valid URL and method.");
-    
+
+    MocktailResponse *matchingResponse = nil;
+    NSUInteger matchingRegexLength = 0;
+
     NSString *absoluteURL = [url absoluteString];
     for (Mocktail *mocktail in [Mocktail allMocktails]) {
         for (MocktailResponse *response in mocktail.mockResponses) {
             if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
                 if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {
-                    return response;
+                    if (response.absoluteURLRegex.pattern.length > matchingRegexLength) {
+                        matchingResponse = response;
+                        matchingRegexLength = response.absoluteURLRegex.pattern.length;
+                    }
                 }
             }
         }
     }
     
-    return nil;
+    return matchingResponse;
 }
 
 - (void)start;
