@@ -9,7 +9,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '5.0'
   s.osx.deployment_target = '10.7'
   s.source_files = 'Mocktail'
-  s.exclude_files = 'Classes/Exclude'
   s.public_header_files = 'Mocktail/Mocktail.h'
   s.framework  = 'Foundation'
   s.requires_arc = true
