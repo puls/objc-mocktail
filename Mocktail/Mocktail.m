@@ -107,13 +107,10 @@ static NSMutableSet *_allMocktails;
     NSString *absoluteURL = [url absoluteString];
     for (Mocktail *mocktail in [Mocktail allMocktails]) {
         for (MocktailResponse *response in mocktail.mockResponses) {
-            if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
-                if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {
-                    if (response.absoluteURLRegex.pattern.length > matchingRegexLength) {
-                        matchingResponse = response;
-                        matchingRegexLength = response.absoluteURLRegex.pattern.length;
-                    }
-                }
+            NSUInteger patternLength;
+            if ([response matchesURL:url method:method patternLength:&patternLength] && patternLength > matchingRegexLength) {
+                matchingResponse = response;
+                matchingRegexLength = patternLength;
             }
         }
     }
@@ -166,36 +163,12 @@ static NSMutableSet *_allMocktails;
 
 - (void)registerFileAtURL:(NSURL *)url;
 {
-    NSAssert(url, @"Expected valid URL.");
-    
-    NSError *error;
-    NSStringEncoding originalEncoding;
-    NSString *contentsOfFile = [NSString stringWithContentsOfURL:url usedEncoding:&originalEncoding error:&error];
-    if (error) {
-        NSLog(@"Error opening %@: %@", url, error);
-        return;
-    }
-    
-    NSScanner *scanner = [NSScanner scannerWithString:contentsOfFile];
-    NSString *headerMatter = nil;
-    [scanner scanUpToString:@"\n\n" intoString:&headerMatter];
-    NSArray *lines = [headerMatter componentsSeparatedByString:@"\n"];
-    if ([lines count] < 4) {
-        NSLog(@"Invalid amount of lines: %u", (unsigned)[lines count]);
-        return;
-    }
-    
-    MocktailResponse *response = [MocktailResponse new];
-    response.mocktail = self;
-    response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
-    response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
-    response.statusCode = [lines[2] integerValue];
-    response.headers = @{@"Content-Type":lines[3]};
-    response.fileURL = url;
-    response.bodyOffset = [headerMatter dataUsingEncoding:originalEncoding].length + 2;
-    
-    @synchronized (_mutableMockResponses) {
-        [_mutableMockResponses addObject:response];
+    MocktailResponse *response = [MocktailResponse responseFromFileAtURL:url];
+    if (response) {
+        response.mocktail = self;
+        @synchronized (_mutableMockResponses) {
+            [_mutableMockResponses addObject:response];
+        }
     }
 }
 

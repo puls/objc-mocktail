@@ -23,4 +23,7 @@
 @property (nonatomic) NSInteger statusCode;
 @property (nonatomic, weak) Mocktail *mocktail;
 
++ (instancetype)responseFromFileAtURL:(NSURL *)url;
+
+- (BOOL)matchesURL:(NSURL *)URL method:(NSString *)method patternLength:(NSUInteger *)patternLength;
 @end
