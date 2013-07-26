@@ -97,20 +97,22 @@ static NSMutableSet *_allMocktails;
     return mockResponses;
 }
 
-+ (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method;
++ (MocktailResponse *)mockResponseForURL:(NSURL *)url method:(NSString *)method mocktail:(Mocktail **)matchingMocktail;
 {
     NSAssert(url && method, @"Expected a valid URL and method.");
 
     MocktailResponse *matchingResponse = nil;
     NSUInteger matchingRegexLength = 0;
 
-    NSString *absoluteURL = [url absoluteString];
     for (Mocktail *mocktail in [Mocktail allMocktails]) {
         for (MocktailResponse *response in mocktail.mockResponses) {
             NSUInteger patternLength;
             if ([response matchesURL:url method:method patternLength:&patternLength] && patternLength > matchingRegexLength) {
                 matchingResponse = response;
                 matchingRegexLength = patternLength;
+                if (matchingMocktail) {
+                    *matchingMocktail = mocktail;
+                }
             }
         }
     }
@@ -165,7 +167,6 @@ static NSMutableSet *_allMocktails;
 {
     MocktailResponse *response = [MocktailResponse responseFromFileAtURL:url];
     if (response) {
-        response.mocktail = self;
         @synchronized (_mutableMockResponses) {
             [_mutableMockResponses addObject:response];
         }

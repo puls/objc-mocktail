@@ -9,21 +9,14 @@
 
 #import <Foundation/Foundation.h>
 
-
-@class Mocktail;
-
-
 @interface MocktailResponse : NSObject
 
-@property (nonatomic, strong) NSRegularExpression *methodRegex;
-@property (nonatomic, strong) NSRegularExpression *absoluteURLRegex;
-@property (nonatomic, strong) NSURL *fileURL;
-@property (nonatomic) NSInteger bodyOffset;
-@property (nonatomic, strong) NSDictionary *headers;
-@property (nonatomic) NSInteger statusCode;
-@property (nonatomic, weak) Mocktail *mocktail;
-
 + (instancetype)responseFromFileAtURL:(NSURL *)url;
-
 - (BOOL)matchesURL:(NSURL *)URL method:(NSString *)method patternLength:(NSUInteger *)patternLength;
+
+@property (nonatomic, readonly) NSDictionary *headers;
+@property (nonatomic, readonly) NSInteger statusCode;
+@property (nonatomic, readonly) NSData *body;
+- (NSData *)bodyWithValues:(NSDictionary *)values;
+
 @end
