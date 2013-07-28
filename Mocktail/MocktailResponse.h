@@ -9,6 +9,8 @@
 
 #import <Foundation/Foundation.h>
 
+FOUNDATION_EXPORT NSString * const MocktailFileExtension;
+
 @interface MocktailResponse : NSObject
 
 + (instancetype)responseFromFileAtURL:(NSURL *)url;

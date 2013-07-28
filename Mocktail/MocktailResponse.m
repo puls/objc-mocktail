@@ -11,6 +11,8 @@
 #import <Foundation/Foundation.h>
 #import "MocktailResponse.h"
 
+NSString * const MocktailFileExtension = @"tail";
+
 @interface MocktailResponse ()
 @property (nonatomic, strong) NSRegularExpression *methodRegex;
 @property (nonatomic, strong) NSRegularExpression *absoluteURLRegex;
@@ -124,7 +126,7 @@
                 }
 
                 memset(decodingTable, CHAR_MAX, 256);
-                for (NSInteger i = 0; i < 64; i++) {
+                for (char i = 0; i < 64; i++) {
                     decodingTable[(short)encodingTable[i]] = i;
                 }
             }

@@ -14,9 +14,6 @@
 #import "MocktailURLProtocol.h"
 
 
-static NSString * const MocktailFileExtension = @".tail";
-
-
 @interface Mocktail ()
 
 @property (nonatomic, strong) NSMutableDictionary *mutablePlaceholderValues;
@@ -155,7 +152,7 @@ static NSMutableSet *_allMocktails;
     }
     
     for (NSURL *fileURL in fileURLs) {
-        if (![[fileURL absoluteString] hasSuffix:MocktailFileExtension]) {
+        if (![fileURL.pathExtension isEqualToString:MocktailFileExtension]) {
             continue;
         }
 
