@@ -121,9 +121,7 @@ static NSMutableSet *_allMocktails;
     NSAssert(![[Mocktail allMocktails] containsObject:self], @"Tried to start Mocktail twice");
     
     if ([Mocktail allMocktails].count == 0) {
-        if(![NSURLProtocol registerClass:[MocktailURLProtocol class]]){
-            NSLog(@"Unsuccessful Class Registration");
-        }
+        NSAssert(![NSURLProtocol registerClass:[MocktailURLProtocol class]], @"Unsuccessful Class Registration");
     }
     [[Mocktail allMocktails] addObject:self];
 }
