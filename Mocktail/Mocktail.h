@@ -16,11 +16,12 @@
 
 /** @name Configuration */
 
-/** Creates and starts a new Mocktail instance, reading in all of the `.tail` files in a directory.
+/** Creates and starts a new Mocktail instance, reading in all of the `.tail` files in a directory. If using NSURLSession pass in NSURLSessionConfiguration if not simply pass in nil
  
  @param url Directory URL on filesystem where `.tail` files may be found
+ @param configuration set up for NSURLSessionConfiguration pass nil if you are not using NSURLSession
  */
-+ (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url;
++ (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url configuration:(NSURLSessionConfiguration *)inConfiguration;
 
 /** Stops the Mocktail instance from responding to requests.
  */
