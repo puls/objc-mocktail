@@ -129,7 +129,9 @@ static NSMutableSet *_allMocktails;
         }
     }
     if (_configuration != nil){
-        _configuration.protocolClasses = @[[MocktailURLProtocol class]];
+        if ([Mocktail allMocktails].count == 0) {
+            _configuration.protocolClasses = @[[MocktailURLProtocol class]];
+        }
     }
     
     [[Mocktail allMocktails] addObject:self];
