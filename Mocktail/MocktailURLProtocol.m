@@ -46,6 +46,7 @@
     NSAssert(response, @"Expected valid mock response");
     NSData *body = [NSData dataWithContentsOfURL:response.fileURL];
     body = [body subdataWithRange:NSMakeRange(response.bodyOffset, body.length - response.bodyOffset)];
+    NSMutableDictionary *headers = [response.headers mutableCopy];
     
     // Replace placeholders with values. We transform the body data into a string for easier search and replace.
     NSDictionary *placeholderValues = mocktail.placeholderValues;
@@ -64,14 +65,14 @@
         if (didReplace) {
             body = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
         }
-    } else if ([response.headers[@"Content-Type"] hasSuffix:@";base64"]) {
-        NSString *type = response.headers[@"Content-Type"];
+    } else if ([headers[@"Content-Type"] hasSuffix:@";base64"]) {
+        NSString *type = headers[@"Content-Type"];
         NSString *newType = [type substringWithRange:NSMakeRange(0, type.length - 7)];
-        response.headers = @{@"Content-Type":newType};
+        headers[@"Content-Type"] = newType;
         body = [self dataByDecodingBase64Data:body];
     }
     
-    NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode:response.statusCode HTTPVersion:@"1.1" headerFields:response.headers];
+    NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode:response.statusCode HTTPVersion:@"1.1" headerFields:headers];
     [self.client URLProtocol:self didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
     
     dispatch_block_t sendResponse = ^{
