@@ -190,7 +190,13 @@ static NSMutableSet *_allMocktails;
     response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
     response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
     response.statusCode = [lines[2] integerValue];
-    response.headers = @{@"Content-Type":lines[3]};
+    NSMutableDictionary* headers = [[NSMutableDictionary alloc] init];
+    for (int i = 3; i < [lines count]; ++i) {
+        NSArray* parts = [[lines objectAtIndex:i] componentsSeparatedByString:@":"];
+        [headers setObject:[[parts lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                    forKey:[parts firstObject]];
+    }
+    response.headers = headers;
     response.fileURL = url;
     response.bodyOffset = [headerMatter dataUsingEncoding:originalEncoding].length + 2;
     
