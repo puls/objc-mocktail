@@ -190,9 +190,9 @@ static NSMutableSet *_allMocktails;
     response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
     response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
     response.statusCode = [lines[2] integerValue];
-    NSMutableDictionary* headers = [[NSMutableDictionary alloc] init];
-    for (int i = 3; i < [lines count]; ++i) {
-        NSArray* parts = [[lines objectAtIndex:i] componentsSeparatedByString:@":"];
+    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
+    for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
+        NSArray* parts = [line componentsSeparatedByString:@":"];
         [headers setObject:[[parts lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
                     forKey:[parts firstObject]];
     }

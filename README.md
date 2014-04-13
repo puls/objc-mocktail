@@ -37,7 +37,7 @@ So we made one up. It's newline-delimited.
 
 **Line 3** is the HTTP status code of the response. Probably `200`.
 
-**From line 4 until an empty newline** is a set of raw HTTP response headers. For example, to give the HTTP/MIME type of the content use `Content-Type: application/json; charset=utf-8`, `Content-Type: text/html` or `Set-Cookie: auth_token=42`. If you want to send back binary data, your best bet is to suffix the Content-Type header with `;base64` and then to Base64-encode the response body. Each header should go into its own line and the section ends with an empty newline.
+**From line 4 until an empty newline** is a set of raw HTTP response headers. For example, to set a cookie named auth_token use `Set-Cookie: auth_token=42' and to give the HTTP/MIME type of the content use `Content-Type: application/json; charset=utf-8` or `Content-Type: text/html`. If you want to send back binary data, your best bet is to suffix the Content-Type header with `;base64` and then to Base64-encode the response body. Each header should go into its own line and the section ends with a blank line.
 
 Everything after the response headers section (i.e. the empty newline after line 4) is sent back as the response body, either verbatim or Base64-decoded, depending on what content type you put in the response headers. Unless you use the placeholder support, but more on that later.
 It doesn't even matter what the filename is as long as it ends in `.tail`. You just use one of these files per mock response "endpoint" and Mocktail loads them all in when you start it.

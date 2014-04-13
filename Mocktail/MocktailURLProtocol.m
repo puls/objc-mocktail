@@ -75,7 +75,7 @@
     NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode:response.statusCode HTTPVersion:@"1.1" headerFields:headers];
     [self.client URLProtocol:self didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
     
-    NSArray* cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:self.request.URL];
+    NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:self.request.URL];
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookies:cookies forURL:self.request.URL mainDocumentURL:nil];
 
     dispatch_block_t sendResponse = ^{
