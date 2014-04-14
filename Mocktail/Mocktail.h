@@ -22,6 +22,22 @@
  */
 + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url;
 
+/** Creates and starts a new Mocktail instance, reading a single `.tail` file at a url.
+ 
+ @param url URL to a file on the filesystem. Must be a `.tail` file.
+ 
+ @return an instantiated Mocktail instance.
+ */
++ (instancetype)startWithFileAtURL:(NSURL *)url;
+
+/** Creates and starts a new Mocktail instance, reading in the `.tail` files at the URLs passed.
+ 
+ @param urlArray An array of NSURLs pointing to `.tail` files. Items that are not NSURLs or don't point to a `.tail` file will be ignored.
+ 
+ @return an instantiated Mocktail instance.
+ */
++ (instancetype)startWithFilesAtURLs:(NSArray *)urlArray;
+
 /** Stops the Mocktail instance from responding to requests.
  */
 - (void)stop;
