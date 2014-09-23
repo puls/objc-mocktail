@@ -192,9 +192,12 @@ static NSMutableSet *_allMocktails;
     response.statusCode = [lines[2] integerValue];
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
     for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
-        NSArray* parts = [line componentsSeparatedByString:@":"];
-        [headers setObject:[[parts lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
-                    forKey:[parts firstObject]];
+		NSArray* parts = [line componentsSeparatedByString:@":"];
+
+		NSString *key = [parts firstObject];
+		NSString *value = [[parts subarrayWithRange:NSMakeRange(1, [parts count]-1)] componentsJoinedByString:@":"];
+        [headers setObject:[value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                    forKey:key];
     }
     response.headers = headers;
     response.fileURL = url;
