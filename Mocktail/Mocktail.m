@@ -103,8 +103,9 @@ static NSMutableSet *_allMocktails;
 
     MocktailResponse *matchingResponse = nil;
     NSUInteger matchingRegexLength = 0;
-
-    NSString *absoluteURL = [url absoluteString];
+    
+    url = [url absoluteURL];
+    NSString *absoluteURL = [NSString stringWithFormat:@"%@:%@", [[url scheme] lowercaseString], [url resourceSpecifier]];
     for (Mocktail *mocktail in [Mocktail allMocktails]) {
         for (MocktailResponse *response in mocktail.mockResponses) {
             if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
@@ -192,10 +193,10 @@ static NSMutableSet *_allMocktails;
     response.statusCode = [lines[2] integerValue];
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
     for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
-		NSArray* parts = [line componentsSeparatedByString:@":"];
+        NSArray* parts = [line componentsSeparatedByString:@":"];
 
-		NSString *key = [parts firstObject];
-		NSString *value = [[parts subarrayWithRange:NSMakeRange(1, [parts count]-1)] componentsJoinedByString:@":"];
+        NSString *key = [parts firstObject];
+        NSString *value = [[parts subarrayWithRange:NSMakeRange(1, [parts count]-1)] componentsJoinedByString:@":"];
         [headers setObject:[value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
                     forKey:key];
     }

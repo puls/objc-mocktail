@@ -80,7 +80,7 @@
 	BOOL isRedirect = ((300 <= response.statusCode) && (response.statusCode <= 399));
 	if (isRedirect) { 
 		NSString *location = [headers objectForKey:@"Location"];
-		NSMutableURLRequest *newRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:location]];
+		NSMutableURLRequest *newRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:location relativeToURL:self.request.URL]];
 		[self.client URLProtocol:self wasRedirectedToRequest:newRequest redirectResponse:urlResponse];
 		
 	} else {
