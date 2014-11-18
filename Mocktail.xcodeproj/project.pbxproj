@@ -147,7 +147,7 @@
 		A822633616C45BC4007C81BC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Square, Inc";
 			};
 			buildConfigurationList = A822633916C45BC4007C81BC /* Build configuration list for PBXProject "Mocktail" */;

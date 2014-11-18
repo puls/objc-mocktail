@@ -17,9 +17,9 @@ You shouldn't ship Mocktail with your code. It's a development tool.
 
 ## Usage
 
-No, really, it's cool, you can still use it! You can read the entire source code in about five minutes to see what's going on. The important API is a single method:
+No, really, it's cool, you can still use it! You can read the entire source code in about eight minutes to see what's going on. The important API is a single method:
 
-    + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url;
+    + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url configuration:(NSURLSessionConfiguration *)configuration;
 
 All you do is put a bunch of files in a particular format (more on that later) and a `.tail` file extension in a directory and pass the URL of that directory to Mocktail. Et voilà.
 
