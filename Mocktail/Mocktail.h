@@ -39,6 +39,10 @@
  */
 @property (nonatomic, assign) NSTimeInterval networkDelay;
 
+/** Additional parameters to add on to the URL to match. Can be useful for having a second request return a different response than the first.
+ */
+@property (nonatomic, copy) NSDictionary *additionalQueryParameters;
+
 /** @name Placeholder Support */
 
 /** Returns the placeholder value for a given key

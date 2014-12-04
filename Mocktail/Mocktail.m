@@ -111,8 +111,14 @@ static NSMutableSet *_allMocktails;
     MocktailResponse *matchingResponse = nil;
     NSUInteger matchingRegexLength = 0;
 
-    NSString *absoluteURL = [url absoluteString];
     for (Mocktail *mocktail in [Mocktail allMocktails]) {
+        NSMutableString *absoluteURL = [[url absoluteString] mutableCopy];
+        if (mocktail.additionalQueryParameters) {
+            [absoluteURL appendString:url.query ? @"&" : @"?"];
+            for (NSString *key in mocktail.additionalQueryParameters) {
+                [absoluteURL appendFormat:@"%@=%@&", key, mocktail.additionalQueryParameters[key]];
+            }
+        }
         for (MocktailResponse *response in mocktail.mockResponses) {
             if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
                 if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {
