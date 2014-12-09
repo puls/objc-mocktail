@@ -24,7 +24,21 @@
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request;
 {
-    return !![Mocktail mockResponseForURL:request.URL method:request.HTTPMethod];
+    if ([Mocktail mockResponseForURL:request.URL method:request.HTTPMethod]) {
+        return YES;
+    } else {
+        [self failedToMockRequest:request];
+        return NO;
+    }
+}
+
++ (void)failedToMockRequest:(NSURLRequest *)request;
+{
+    static BOOL hasLoggedBefore = NO;
+    if (!hasLoggedBefore) {
+        NSLog(@"Failed to mock %@ request for %@. You may want to set a breakpoint at +[MocktailURLProtocol failedToMockRequest:] to catch this in the debugger, as this particular log message will only be emitted once.", request.HTTPMethod, request.URL);
+        hasLoggedBefore = YES;
+    }
 }
 
 + (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request;
