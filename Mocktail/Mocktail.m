@@ -19,6 +19,7 @@ static NSString * const MocktailFileExtension = @".tail";
 
 @interface Mocktail ()
 
+@property (nonatomic, strong) NSURLSessionConfiguration *configuration;
 @property (nonatomic, strong) NSMutableDictionary *mutablePlaceholderValues;
 @property (nonatomic, strong) NSMutableSet *mutableMockResponses;
 
@@ -41,8 +42,14 @@ static NSMutableSet *_allMocktails;
 
 + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url
 {
+    return [self startWithContentsOfDirectoryAtURL:url configuration:nil];
+}
+
++ (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url configuration:(NSURLSessionConfiguration *)configuration;
+{
     Mocktail *mocktail = [self new];
     [mocktail registerContentsOfDirectoryAtURL:url];
+    mocktail.configuration = configuration;
     [mocktail start];
     return mocktail;
 }
@@ -142,9 +149,14 @@ static NSMutableSet *_allMocktails;
 {
     NSAssert([NSThread isMainThread], @"Please start and stop Mocktail from the main thread");
     NSAssert(![[Mocktail allMocktails] containsObject:self], @"Tried to start Mocktail twice");
-    
+
     if ([Mocktail allMocktails].count == 0) {
-        NSAssert([NSURLProtocol registerClass:[MocktailURLProtocol class]], @"Unsuccessful Class Registration");
+        if (self.configuration) {
+            NSArray *classes = [[NSArray arrayWithObject:[MocktailURLProtocol class]] arrayByAddingObjectsFromArray:self.configuration.protocolClasses];
+            self.configuration.protocolClasses = classes;
+        } else {
+            NSAssert([NSURLProtocol registerClass:[MocktailURLProtocol class]], @"Unsuccessful Class Registration");
+        }
     }
     [[Mocktail allMocktails] addObject:self];
 }
@@ -156,7 +168,13 @@ static NSMutableSet *_allMocktails;
     
     [[Mocktail allMocktails] removeObject:self];
     if ([Mocktail allMocktails].count == 0) {
-        [NSURLProtocol unregisterClass:[MocktailURLProtocol class]];
+        if (self.configuration) {
+            NSMutableArray *newClasses = [self.configuration.protocolClasses mutableCopy];
+            [newClasses removeObject:[MocktailURLProtocol class]];
+            self.configuration.protocolClasses = newClasses;
+        } else {
+            [NSURLProtocol unregisterClass:[MocktailURLProtocol class]];
+        }
     }
 }
 
@@ -207,7 +225,13 @@ static NSMutableSet *_allMocktails;
     response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
     response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
     response.statusCode = [lines[2] integerValue];
-    response.headers = @{@"Content-Type":lines[3]};
+    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
+    for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
+        NSArray* parts = [line componentsSeparatedByString:@":"];
+        [headers setObject:[[parts lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                    forKey:[parts firstObject]];
+    }
+    response.headers = headers;
     response.fileURL = url;
     response.bodyOffset = [headerMatter dataUsingEncoding:originalEncoding].length + 2;
     

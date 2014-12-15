@@ -17,9 +17,9 @@ You shouldn't ship Mocktail with your code. It's a development tool.
 
 ## Usage
 
-No, really, it's cool, you can still use it! You can read the entire source code in about five minutes to see what's going on. The important API is a single method:
+No, really, it's cool, you can still use it! You can read the entire source code in about eight minutes to see what's going on. The important API is a single method:
 
-    + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url;
+    + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url configuration:(NSURLSessionConfiguration *)configuration;
 
 All you do is put a bunch of files in a particular format (more on that later) and a `.tail` file extension in a directory and pass the URL of that directory to Mocktail. Et voilà.
 
@@ -37,11 +37,9 @@ So we made one up. It's newline-delimited.
 
 **Line 3** is the HTTP status code of the response. Probably `200`.
 
-**Line 4** is the HTTP/MIME content type of the content. `application/json; charset=utf-8` is a nice value for this line, as is `text/html`. If you want to send back binary data, your best bet is to suffix this line with `;base64` and then to Base64-encode the response body.
+**From line 4 until a blank line** is a set of raw HTTP response headers. For example, to set a cookie named `auth_token` use `Set-Cookie: auth_token=42` and to give the HTTP/MIME type of the content use `Content-Type: application/json; charset=utf-8` or `Content-Type: text/html`. If you want to send back binary data, your best bet is to suffix the Content-Type header with `;base64` and then to Base64-encode the response body. Each header should go into its own line and the section ends with a blank line.
 
-**Line 5** is blank.
-
-Everything after the newline ending line 5 (that is to say, line 6 and on) is sent back as the response body, either verbatim or Base64-decoded, depending on what you put on line 4. Unless you use the placeholder support, but more on that later.
+Everything after the response headers section (i.e. the blank line after line 4) is sent back as the response body, either verbatim or Base64-decoded, depending on what content type you put in the response headers. Unless you use the placeholder support, but more on that later.
 It doesn't even matter what the filename is as long as it ends in `.tail`. You just use one of these files per mock response "endpoint" and Mocktail loads them all in when you start it.
 
 ## Placeholder support
