@@ -33,6 +33,10 @@
  */
 - (void)stop;
 
+/** Clears all mocktails from the internal collection, effectively resetting Mocktail to it's initial state.
+ */
++ (void)clearMocktails;
+
 /** Additional latency to add before sending back mock responses. Useful for simulating a bad network, or at least for simulating real-world performance.
  
  Default value is 0.0.
