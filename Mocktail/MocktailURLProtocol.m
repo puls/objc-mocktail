@@ -73,22 +73,31 @@
     }
     
     NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode:response.statusCode HTTPVersion:@"1.1" headerFields:headers];
-    [self.client URLProtocol:self didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
     
     NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:self.request.URL];
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookies:cookies forURL:self.request.URL mainDocumentURL:nil];
-
-    dispatch_block_t sendResponse = ^{
-        if (!self.canceled) {
-            [self.client URLProtocol:self didLoadData:body];
-            [self.client URLProtocolDidFinishLoading:self];
-        }
-    };
-    if (mocktail.networkDelay == 0.0) {
-        sendResponse();
+    
+    BOOL isRedirect = ((300 <= response.statusCode) && (response.statusCode <= 399));
+    if (isRedirect) { 
+        NSString *location = [headers objectForKey:@"Location"];
+        NSMutableURLRequest *newRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:location relativeToURL:self.request.URL]];
+        [self.client URLProtocol:self wasRedirectedToRequest:newRequest redirectResponse:urlResponse];
+        
     } else {
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, mocktail.networkDelay * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), sendResponse);
+        [self.client URLProtocol:self didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
+        
+        dispatch_block_t sendResponse = ^{
+            if (!self.canceled) {
+                [self.client URLProtocol:self didLoadData:body];
+                [self.client URLProtocolDidFinishLoading:self];
+            }
+        };
+        if (mocktail.networkDelay == 0.0) {
+            sendResponse();
+        } else {
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, mocktail.networkDelay * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), sendResponse);
+        }
     }
 }
 

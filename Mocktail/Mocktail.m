@@ -110,8 +110,9 @@ static NSMutableSet *_allMocktails;
 
     MocktailResponse *matchingResponse = nil;
     NSUInteger matchingRegexLength = 0;
-
-    NSString *absoluteURL = [url absoluteString];
+    
+    url = [url absoluteURL];
+    NSString *absoluteURL = [NSString stringWithFormat:@"%@:%@", [[url scheme] lowercaseString], [url resourceSpecifier]];
     for (Mocktail *mocktail in [Mocktail allMocktails]) {
         for (MocktailResponse *response in mocktail.mockResponses) {
             if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
@@ -211,8 +212,11 @@ static NSMutableSet *_allMocktails;
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
     for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
         NSArray* parts = [line componentsSeparatedByString:@":"];
-        [headers setObject:[[parts lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
-                    forKey:[parts firstObject]];
+
+        NSString *key = [parts firstObject];
+        NSString *value = [[parts subarrayWithRange:NSMakeRange(1, [parts count]-1)] componentsJoinedByString:@":"];
+        [headers setObject:[value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                    forKey:key];
     }
     response.headers = headers;
     response.fileURL = url;
