@@ -17,10 +17,26 @@
 /** @name Configuration */
 
 /** Creates and starts a new Mocktail instance, reading in all of the `.tail` files in a directory.
- 
+
  @param url Directory URL on filesystem where `.tail` files may be found
  */
 + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url;
+
+/** Creates and starts a new Mocktail instance, reading a single `.tail` file at a url.
+
+ @param url URL to a file on the filesystem. Must be a `.tail` file.
+
+ @return an instantiated Mocktail instance.
+ */
++ (instancetype)startWithFileAtURL:(NSURL *)url;
+
+/** Creates and starts a new Mocktail instance, reading in the `.tail` files at the URLs passed.
+
+ @param urlArray An array of NSURLs pointing to `.tail` files. Items that are not NSURLs or don't point to a `.tail` file will be ignored.
+
+ @return an instantiated Mocktail instance.
+ */
++ (instancetype)startWithFilesAtURLs:(NSArray *)urlArray;
 
 /** Creates and starts a new Mocktail instance, reading in all of the `.tail` files in a directory and configuring an NSURLSession.
 
@@ -34,7 +50,7 @@
 - (void)stop;
 
 /** Additional latency to add before sending back mock responses. Useful for simulating a bad network, or at least for simulating real-world performance.
- 
+
  Default value is 0.0.
  */
 @property (nonatomic, assign) NSTimeInterval networkDelay;
@@ -50,13 +66,13 @@
 /** @name Placeholder Support */
 
 /** Returns the placeholder value for a given key
- 
+
  @param aKey The key to replace in `.tail` files
  */
 - (NSString *)objectForKeyedSubscript:(NSString *)aKey;
 
 /** Sets the placeholder value for a given key
- 
+
  @param object The placeholder value, probably a string.
  @param aKey The key to replace in `.tail` files
  */
