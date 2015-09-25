@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "Mocktail"
-  s.version      = "1.2.1"
+  s.version      = "1.3"
   s.summary      = "A simple(r) way to stub out HTTP servers in your Objective-C app."
   s.homepage     = "http://github.com/square/objc-mocktail"
   s.license      = 'Apache'
   s.author       = { "Jim Puls" => "jim@nondifferentiable.com" }
-  s.source       = { :git => "https://github.com/square/objc-mocktail.git", :tag => "1.2.1" }
+  s.source       = { :git => "https://github.com/square/objc-mocktail.git", :tag => "1.3" }
   s.ios.deployment_target = '5.0'
   s.osx.deployment_target = '10.7'
   s.source_files = 'Mocktail'
