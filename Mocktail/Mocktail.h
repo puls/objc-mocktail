@@ -43,6 +43,10 @@
  */
 @property (nonatomic, copy) NSDictionary *additionalQueryParameters;
 
+/** Throw an exception if no mock responses matches the request
+ */
+@property (nonatomic, assign) BOOL throwExceptionIfNoResponseMatches;
+
 /** @name Placeholder Support */
 
 /** Returns the placeholder value for a given key

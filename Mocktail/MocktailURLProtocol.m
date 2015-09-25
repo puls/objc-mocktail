@@ -20,6 +20,13 @@
 @end
 
 
+@interface Mocktail ()
+
++ (NSMutableSet *)allMocktails;
+
+@end
+
+
 @implementation MocktailURLProtocol
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request;
@@ -35,9 +42,16 @@
 + (void)failedToMockRequest:(NSURLRequest *)request;
 {
     static BOOL hasLoggedBefore = NO;
+    NSString *message = [NSString stringWithFormat:@"Failed to mock %@ request for %@. ", request.HTTPMethod, request.URL];
     if (!hasLoggedBefore) {
-        NSLog(@"Failed to mock %@ request for %@. You may want to set a breakpoint at +[MocktailURLProtocol failedToMockRequest:] to catch this in the debugger, as this particular log message will only be emitted once.", request.HTTPMethod, request.URL);
+        NSLog(@"%@ You may want to set a breakpoint at +[MocktailURLProtocol failedToMockRequest:] to catch this in the debugger, as this particular log message will only be emitted once.", message);
         hasLoggedBefore = YES;
+    }
+    for (Mocktail *mocktail in [Mocktail allMocktails]) {
+        if (mocktail.throwExceptionIfNoResponseMatches) {
+            NSException *exception = [NSException exceptionWithName:@"MocktailException" reason:message userInfo:@{@"HTTPMethod": request.HTTPMethod, @"URL": request.URL}];
+            @throw exception;
+        }
     }
 }
 
