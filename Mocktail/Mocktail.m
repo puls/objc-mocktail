@@ -12,9 +12,11 @@
 #import "Mocktail_Private.h"
 #import "MocktailResponse.h"
 #import "MocktailURLProtocol.h"
+#import <UIKit/UIKit.h>
 
 
-static NSString * const MocktailFileExtension = @".tail";
+static NSString *const MocktailFileExtension = @".tail";
+static NSString *const MocktailPasteboardName = @"Mocktail Query String";
 
 
 @interface Mocktail ()
@@ -50,6 +52,23 @@ static NSMutableSet *_allMocktails;
     Mocktail *mocktail = [self new];
     [mocktail registerContentsOfDirectoryAtURL:url];
     mocktail.configuration = configuration;
+    [mocktail start];
+    return mocktail;
+}
+
++ (instancetype)startWithFileAtURL:(NSURL *)url
+{
+    return [self startWithFilesAtURLs:@[url]];
+}
+
++ (instancetype)startWithFilesAtURLs:(NSArray *)urlArray
+{
+    Mocktail *mocktail = [self new];
+    for (NSURL *url in urlArray) {
+        if ([url isKindOfClass:[NSURL class]]) {
+            [mocktail registerFileAtURL:url];
+        }
+    }
     [mocktail start];
     return mocktail;
 }
@@ -111,8 +130,23 @@ static NSMutableSet *_allMocktails;
     MocktailResponse *matchingResponse = nil;
     NSUInteger matchingRegexLength = 0;
 
-    NSString *absoluteURL = [url absoluteString];
     for (Mocktail *mocktail in [Mocktail allMocktails]) {
+        NSMutableString *absoluteURL = [[url absoluteString] mutableCopy];
+        BOOL hasQuery = url.query != nil;
+        if (mocktail.additionalQueryParameters) {
+            [absoluteURL appendString:hasQuery ? @"&" : @"?"];
+            for (NSString *key in mocktail.additionalQueryParameters) {
+                [absoluteURL appendFormat:@"%@=%@&", key, mocktail.additionalQueryParameters[key]];
+            }
+            hasQuery = YES;
+        }
+        NSString *pasteboardExtras = [[UIPasteboard pasteboardWithName:MocktailPasteboardName create:NO] string];
+        if (pasteboardExtras.length > 0) {
+            [absoluteURL appendString:hasQuery ? @"&" : @"?"];
+            [absoluteURL appendString:pasteboardExtras];
+            hasQuery = YES;
+        }
+
         for (MocktailResponse *response in mocktail.mockResponses) {
             if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
                 if ([response.methodRegex numberOfMatchesInString:method options:0 range:NSMakeRange(0, method.length)] > 0) {

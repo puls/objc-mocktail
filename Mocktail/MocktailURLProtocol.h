@@ -11,4 +11,5 @@
 
 
 @interface MocktailURLProtocol : NSURLProtocol
+
 @end
