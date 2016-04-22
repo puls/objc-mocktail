@@ -63,12 +63,18 @@ static NSMutableSet *_allMocktails;
 
 + (instancetype)startWithFilesAtURLs:(NSArray *)urlArray
 {
+    return [self startWithFilesAtURLs:urlArray configuration:nil];
+}
+
++ (instancetype)startWithFilesAtURLs:(NSArray *)urlArray configuration:(NSURLSessionConfiguration *)configuration
+{
     Mocktail *mocktail = [self new];
     for (NSURL *url in urlArray) {
         if ([url isKindOfClass:[NSURL class]]) {
             [mocktail registerFileAtURL:url];
         }
     }
+    mocktail.configuration = configuration;
     [mocktail start];
     return mocktail;
 }
