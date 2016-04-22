@@ -107,7 +107,7 @@ static NSMutableSet *_allMocktails;
 - (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)aKey
 {
     @synchronized (_mutablePlaceholderValues) {
-        [_mutablePlaceholderValues setObject:object forKey:aKey];
+        _mutablePlaceholderValues[aKey] = object;
     }
 }
 
@@ -115,7 +115,7 @@ static NSMutableSet *_allMocktails;
 {
     NSString *value;
     @synchronized (_mutablePlaceholderValues) {
-        value = [[_mutablePlaceholderValues objectForKey:aKey] copy];
+        value = [_mutablePlaceholderValues[aKey] copy];
     }
     return value;
 }
@@ -173,14 +173,14 @@ static NSMutableSet *_allMocktails;
     NSAssert([NSThread isMainThread], @"Please start and stop Mocktail from the main thread");
     NSAssert(![[Mocktail allMocktails] containsObject:self], @"Tried to start Mocktail twice");
 
-    if ([Mocktail allMocktails].count == 0) {
-        if (self.configuration) {
-            NSArray *classes = [[NSArray arrayWithObject:[MocktailURLProtocol class]] arrayByAddingObjectsFromArray:self.configuration.protocolClasses];
-            self.configuration.protocolClasses = classes;
-        } else {
-            NSAssert([NSURLProtocol registerClass:[MocktailURLProtocol class]], @"Unsuccessful Class Registration");
-        }
+    if (self.configuration && ![self.configuration.protocolClasses containsObject:[MocktailURLProtocol class]]) {
+        NSArray *classes = [[NSArray arrayWithObject:[MocktailURLProtocol class]] arrayByAddingObjectsFromArray:self.configuration.protocolClasses];
+        self.configuration.protocolClasses = classes;
     }
+    if ([Mocktail allMocktails].count == 0) {
+        NSAssert([NSURLProtocol registerClass:[MocktailURLProtocol class]], @"Unsuccessful Class Registration");
+    }
+
     [[Mocktail allMocktails] addObject:self];
 }
 
@@ -188,7 +188,7 @@ static NSMutableSet *_allMocktails;
 {
     NSAssert([NSThread isMainThread], @"Please start and stop Mocktail from the main thread");
     NSAssert([[Mocktail allMocktails] containsObject:self], @"Tried to stop unstarted Mocktail");
-    
+
     [[Mocktail allMocktails] removeObject:self];
     if ([Mocktail allMocktails].count == 0) {
         if (self.configuration) {
@@ -212,7 +212,7 @@ static NSMutableSet *_allMocktails;
         NSLog(@"Error opening %@: %@", url, error);
         return;
     }
-    
+
     for (NSURL *fileURL in fileURLs) {
         if (![[fileURL absoluteString] hasSuffix:MocktailFileExtension]) {
             continue;
@@ -225,7 +225,7 @@ static NSMutableSet *_allMocktails;
 - (void)registerFileAtURL:(NSURL *)url;
 {
     NSAssert(url, @"Expected valid URL.");
-    
+
     NSError *error;
     NSStringEncoding originalEncoding;
     NSString *contentsOfFile = [NSString stringWithContentsOfURL:url usedEncoding:&originalEncoding error:&error];
@@ -233,7 +233,7 @@ static NSMutableSet *_allMocktails;
         NSLog(@"Error opening %@: %@", url, error);
         return;
     }
-    
+
     NSScanner *scanner = [NSScanner scannerWithString:contentsOfFile];
     NSString *headerMatter = nil;
     [scanner scanUpToString:@"\n\n" intoString:&headerMatter];
@@ -242,7 +242,7 @@ static NSMutableSet *_allMocktails;
         NSLog(@"Invalid amount of lines: %u", (unsigned)[lines count]);
         return;
     }
-    
+
     MocktailResponse *response = [MocktailResponse new];
     response.mocktail = self;
     response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
@@ -251,13 +251,12 @@ static NSMutableSet *_allMocktails;
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
     for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
         NSArray* parts = [line componentsSeparatedByString:@":"];
-        [headers setObject:[[parts lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
-                    forKey:[parts firstObject]];
+        headers[parts.firstObject] = [parts.lastObject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
     response.headers = headers;
     response.fileURL = url;
     response.bodyOffset = [headerMatter dataUsingEncoding:originalEncoding].length + 2;
-    
+
     @synchronized (_mutableMockResponses) {
         [_mutableMockResponses addObject:response];
     }
