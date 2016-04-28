@@ -12,7 +12,10 @@
 #import "Mocktail_Private.h"
 #import "MocktailResponse.h"
 #import "MocktailURLProtocol.h"
+
+#if TARGET_OS_IOS
 #import <UIKit/UIKit.h>
+#endif
 
 
 static NSString *const MocktailFileExtension = @".tail";
@@ -146,12 +149,14 @@ static NSMutableSet *_allMocktails;
             }
             hasQuery = YES;
         }
+#if TARGET_OS_IOS
         NSString *pasteboardExtras = [[UIPasteboard pasteboardWithName:MocktailPasteboardName create:NO] string];
         if (pasteboardExtras.length > 0) {
             [absoluteURL appendString:hasQuery ? @"&" : @"?"];
             [absoluteURL appendString:pasteboardExtras];
             hasQuery = YES;
         }
+#endif
 
         for (MocktailResponse *response in mocktail.mockResponses) {
             if ([response.absoluteURLRegex numberOfMatchesInString:absoluteURL options:0 range:NSMakeRange(0, absoluteURL.length)] > 0) {
