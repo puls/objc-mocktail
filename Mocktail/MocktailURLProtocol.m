@@ -208,7 +208,7 @@
         }
     }
     
-    realloc(bytes, length);
+    //realloc(bytes, length);
     return [NSData dataWithBytesNoCopy:bytes length:length freeWhenDone:YES];
 }
 
