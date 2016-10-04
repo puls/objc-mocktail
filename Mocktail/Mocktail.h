@@ -45,6 +45,13 @@
  */
 + (instancetype)startWithContentsOfDirectoryAtURL:(NSURL *)url configuration:(NSURLSessionConfiguration *)configuration;
 
+/** Creates and starts a new Mocktail instance, reading in the `.tail` files at the URLs passed and configuring an NSURLSession.
+
+ @param urlArray An array of NSURLs pointing to `.tail` files. Items that are not NSURLs or don't point to a `.tail` file will be ignored.
+ @param configuration `NSURLSessionConfiguration` for the session that will return mock responses. Pass `nil` if you're using `NSURLConnection` instead of `NSURLSession`.
+ */
++ (instancetype)startWithFilesAtURLs:(NSArray *)urlArray configuration:(NSURLSessionConfiguration *)configuration;
+
 /** Stops the Mocktail instance from responding to requests.
  */
 - (void)stop;

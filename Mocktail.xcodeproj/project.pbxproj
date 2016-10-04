@@ -11,6 +11,7 @@
 		39F1B1F316EE98EF00D05B96 /* MocktailResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */; };
 		39F1B1F416EE98EF00D05B96 /* MocktailURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 39F1B1F016EE98EF00D05B96 /* MocktailURLProtocol.h */; settings = {ATTRIBUTES = (); }; };
 		39F1B1F516EE98EF00D05B96 /* MocktailURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 39F1B1F116EE98EF00D05B96 /* MocktailURLProtocol.m */; };
+		86C740641CD210760005B381 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86C740631CD210760005B381 /* UIKit.framework */; };
 		A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A822634116C45BC4007C81BC /* Foundation.framework */; };
 		A822634916C45BC4007C81BC /* Mocktail.m in Sources */ = {isa = PBXBuildFile; fileRef = A822634816C45BC4007C81BC /* Mocktail.m */; };
 		A822635016C45D9E007C81BC /* Mocktail.h in Headers */ = {isa = PBXBuildFile; fileRef = A822634616C45BC4007C81BC /* Mocktail.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -22,6 +23,7 @@
 		39F1B1EF16EE98EF00D05B96 /* MocktailResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MocktailResponse.m; sourceTree = "<group>"; };
 		39F1B1F016EE98EF00D05B96 /* MocktailURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MocktailURLProtocol.h; sourceTree = "<group>"; };
 		39F1B1F116EE98EF00D05B96 /* MocktailURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MocktailURLProtocol.m; sourceTree = "<group>"; };
+		86C740631CD210760005B381 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A822633E16C45BC4007C81BC /* libMocktail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMocktail.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A822634116C45BC4007C81BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A822634516C45BC4007C81BC /* Mocktail-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mocktail-Prefix.pch"; sourceTree = "<group>"; };
@@ -35,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86C740641CD210760005B381 /* UIKit.framework in Frameworks */,
 				A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -62,6 +65,7 @@
 		A822634016C45BC4007C81BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				86C740631CD210760005B381 /* UIKit.framework */,
 				A822634116C45BC4007C81BC /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -208,7 +212,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
@@ -233,7 +237,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
