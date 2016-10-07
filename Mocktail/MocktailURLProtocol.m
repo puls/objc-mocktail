@@ -98,6 +98,22 @@
         NSString *newType = [type substringWithRange:NSMakeRange(0, type.length - 7)];
         headers[@"Content-Type"] = newType;
         body = [self dataByDecodingBase64Data:body];
+    } else if ([headers[@"Content-Type"] hasSuffix:@";bundleFile"]) {
+        NSString *type = headers[@"Content-Type"];
+        NSString *newType = [type substringWithRange:NSMakeRange(0, type.length - 11)];
+        headers[@"Content-Type"] = newType;
+        
+        NSString *bodyString = [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding];
+        NSArray *parts = [bodyString componentsSeparatedByString:@"."];
+        NSData *bodyData = nil;
+        
+        if(parts && parts.count == 2)
+        {
+            NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:parts[0] ofType:parts[1]];
+            bodyData = [NSData dataWithContentsOfFile:path];
+        }
+        
+        body = bodyData;
     }
     
     NSHTTPURLResponse *urlResponse = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL statusCode:response.statusCode HTTPVersion:@"1.1" headerFields:headers];
