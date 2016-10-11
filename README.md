@@ -42,6 +42,10 @@ So we made one up. It's newline-delimited.
 Everything after the response headers section (i.e. the blank line after line 4) is sent back as the response body, either verbatim or Base64-decoded, depending on what content type you put in the response headers. Unless you use the placeholder support, but more on that later.
 It doesn't even matter what the filename is as long as it ends in `.tail`. You just use one of these files per mock response "endpoint" and Mocktail loads them all in when you start it.
 
+##### Notes 
+
+There are tools that can record all the HTTP(s) traffic in the background while the app is running in the exact file format described here, like [SWHttpTrafficRecorder](https://github.com/capitalone/SWHttpTrafficRecorder). After recording, the files can be used by Mocktail to stub out HTTP servers.   
+
 ## Placeholder support
 
 Oh, so you wanted your mock responses to be smarter? That's not very slacker-like.
