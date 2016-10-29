@@ -195,6 +195,11 @@ static NSMutableSet *_allMocktails;
     }
 }
 
++ (void)clearMocktails
+{
+    [[Mocktail allMocktails] removeAllObjects];
+}
+
 #pragma mark - Parsing files
 
 - (void)registerContentsOfDirectoryAtURL:(NSURL *)url;
