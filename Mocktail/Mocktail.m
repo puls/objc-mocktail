@@ -218,42 +218,13 @@ static NSMutableSet *_allMocktails;
 
 - (void)registerFileAtURL:(NSURL *)url;
 {
-    NSAssert(url, @"Expected valid URL.");
-    
-    NSError *error;
-    NSStringEncoding originalEncoding;
-    NSString *contentsOfFile = [NSString stringWithContentsOfURL:url usedEncoding:&originalEncoding error:&error];
-    if (error) {
-        NSLog(@"Error opening %@: %@", url, error);
-        return;
-    }
-    
-    NSScanner *scanner = [NSScanner scannerWithString:contentsOfFile];
-    NSString *headerMatter = nil;
-    [scanner scanUpToString:@"\n\n" intoString:&headerMatter];
-    NSArray *lines = [headerMatter componentsSeparatedByString:@"\n"];
-    if ([lines count] < 4) {
-        NSLog(@"Invalid amount of lines: %u", (unsigned)[lines count]);
-        return;
-    }
-    
-    MocktailResponse *response = [MocktailResponse new];
-    response.mocktail = self;
-    response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
-    response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
-    response.statusCode = [lines[2] integerValue];
-    NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
-    for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
-        NSArray* parts = [line componentsSeparatedByString:@":"];
-        [headers setObject:[[parts lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
-                    forKey:[parts firstObject]];
-    }
-    response.headers = headers;
-    response.fileURL = url;
-    response.bodyOffset = [headerMatter dataUsingEncoding:originalEncoding].length + 2;
-    
+    MocktailResponse *response = [MocktailResponse mocktailResponseForFileAtURL:url];
+
     @synchronized (_mutableMockResponses) {
-        [_mutableMockResponses addObject:response];
+        if (response) {
+            response.mocktail = self;
+            [_mutableMockResponses addObject:response];
+        }
     }
 }
 

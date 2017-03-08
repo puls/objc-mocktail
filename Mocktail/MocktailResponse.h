@@ -15,12 +15,18 @@
 
 @interface MocktailResponse : NSObject
 
-@property (nonatomic, strong) NSRegularExpression *methodRegex;
-@property (nonatomic, strong) NSRegularExpression *absoluteURLRegex;
-@property (nonatomic, strong) NSURL *fileURL;
-@property (nonatomic) NSInteger bodyOffset;
-@property (nonatomic, strong) NSDictionary *headers;
-@property (nonatomic) NSInteger statusCode;
+@property (nonatomic, strong, readonly) NSRegularExpression *methodRegex;
+@property (nonatomic, strong, readonly) NSRegularExpression *absoluteURLRegex;
+@property (nonatomic, strong, readonly) NSURL *fileURL;
+@property (nonatomic, readonly) NSInteger bodyOffset;
+@property (nonatomic, strong, readonly) NSDictionary *headers;
+@property (nonatomic, readonly) NSInteger statusCode;
 @property (nonatomic, weak) Mocktail *mocktail;
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithFileAtURL:(NSURL *)fileURL NS_DESIGNATED_INITIALIZER;
+
++ (MocktailResponse *)mocktailResponseForFileAtURL:(NSURL *)url;
 
 @end
