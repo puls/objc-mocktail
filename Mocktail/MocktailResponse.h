@@ -9,9 +9,14 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const kMocktailResponseErrorDomain;
+
+typedef NS_ENUM(NSInteger, MockTailResponseError) {
+    MocktailResponseErrorOpeningFile,
+    MocktailResponseErrorNumberOfLines
+};
 
 @class Mocktail;
-
 
 @interface MocktailResponse : NSObject
 
@@ -25,8 +30,8 @@
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithFileAtURL:(NSURL *)fileURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFileAtURL:(NSURL *)fileURL error:(NSError **)error NS_DESIGNATED_INITIALIZER;
 
-+ (MocktailResponse *)mocktailResponseForFileAtURL:(NSURL *)url;
++ (MocktailResponse *)mocktailResponseForFileAtURL:(NSURL *)url error:(NSError **)error;
 
 @end
