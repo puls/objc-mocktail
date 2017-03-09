@@ -22,6 +22,8 @@
 @end
 
 NSString *const kMocktailResponseErrorDomain = @"MocktailResponseError";
+NSString *const kFileErrorUserDataKey = @"fileError";
+NSString *const kNumberOfLinesErrorUserDataKey = @"lines";
 static NSUInteger const kNumLinesRequired = 4;
 
 @implementation MocktailResponse
@@ -35,7 +37,7 @@ static NSUInteger const kNumLinesRequired = 4;
         if (fileError) {
             *error = [[NSError alloc] initWithDomain:kMocktailResponseErrorDomain
                                                 code:MocktailResponseErrorOpeningFile
-                                            userInfo:@{@"fileError": fileError}];
+                                            userInfo:@{kFileErrorUserDataKey: fileError}];
             return nil;
         }
 
@@ -46,7 +48,7 @@ static NSUInteger const kNumLinesRequired = 4;
         if ([lines count] < kNumLinesRequired) {
             *error = [[NSError alloc] initWithDomain:kMocktailResponseErrorDomain
                                                 code:MocktailResponseErrorNumberOfLines
-                                            userInfo:@{@"lines": lines}];
+                                            userInfo:@{kNumberOfLinesErrorUserDataKey: lines}];
             return nil;
         }
 

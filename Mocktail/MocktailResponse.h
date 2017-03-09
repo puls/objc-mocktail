@@ -10,6 +10,8 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const kMocktailResponseErrorDomain;
+extern NSString *const kFileErrorUserDataKey;
+extern NSString *const kNumberOfLinesErrorUserDataKey;
 
 typedef NS_ENUM(NSInteger, MockTailResponseError) {
     MocktailResponseErrorOpeningFile,

@@ -223,9 +223,9 @@ static NSMutableSet *_allMocktails;
 
     if (mocktailResponseError) {
         if (mocktailResponseError.code == MocktailResponseErrorOpeningFile) {
-            NSLog(@"Error opening %@: %@", url, mocktailResponseError.userInfo[@"fileError"]);
+            NSLog(@"Error opening %@: %@", url, mocktailResponseError.userInfo[kFileErrorUserDataKey]);
         } else if (mocktailResponseError.code == MocktailResponseErrorNumberOfLines) {
-            NSLog(@"Invalid amount of lines: %u", (unsigned)[mocktailResponseError.userInfo[@"lines"] count]);
+            NSLog(@"Invalid amount of lines: %u", (unsigned)[mocktailResponseError.userInfo[kNumberOfLinesErrorUserDataKey] count]);
         }
     }
 
