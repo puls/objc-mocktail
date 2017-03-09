@@ -218,7 +218,16 @@ static NSMutableSet *_allMocktails;
 
 - (void)registerFileAtURL:(NSURL *)url;
 {
-    MocktailResponse *response = [MocktailResponse mocktailResponseForFileAtURL:url];
+    NSError *mocktailResponseError;
+    MocktailResponse *response = [MocktailResponse mocktailResponseForFileAtURL:url error:&mocktailResponseError];
+
+    if (mocktailResponseError) {
+        if (mocktailResponseError.code == MocktailResponseErrorOpeningFile) {
+            NSLog(@"Error opening %@: %@", url, mocktailResponseError.userInfo[kFileErrorUserDataKey]);
+        } else if (mocktailResponseError.code == MocktailResponseErrorNumberOfLines) {
+            NSLog(@"Invalid amount of lines: %u", (unsigned)[mocktailResponseError.userInfo[kNumberOfLinesErrorUserDataKey] count]);
+        }
+    }
 
     @synchronized (_mutableMockResponses) {
         if (response) {

@@ -10,7 +10,6 @@
 
 #import "MocktailResponse.h"
 
-
 @interface MocktailResponse()
 
 @property (nonatomic, strong) NSRegularExpression *methodRegex;
@@ -22,17 +21,23 @@
 
 @end
 
+NSString *const kMocktailResponseErrorDomain = @"MocktailResponseError";
+NSString *const kFileErrorUserDataKey = @"fileError";
+NSString *const kNumberOfLinesErrorUserDataKey = @"lines";
+static NSUInteger const kNumLinesRequired = 4;
 
 @implementation MocktailResponse
 
-- (instancetype)initWithFileAtURL:(NSURL *)url {
+- (instancetype)initWithFileAtURL:(NSURL *)url error:(NSError *__autoreleasing *)error {
     self = [super init];
     if (self) {
-        NSError *error;
+        NSError *fileError;
         NSStringEncoding originalEncoding;
-        NSString *contentsOfFile = [NSString stringWithContentsOfURL:url usedEncoding:&originalEncoding error:&error];
-        if (error) {
-            NSLog(@"Error opening %@: %@", url, error);
+        NSString *contentsOfFile = [NSString stringWithContentsOfURL:url usedEncoding:&originalEncoding error:&fileError];
+        if (fileError) {
+            *error = [[NSError alloc] initWithDomain:kMocktailResponseErrorDomain
+                                                code:MocktailResponseErrorOpeningFile
+                                            userInfo:@{kFileErrorUserDataKey: fileError}];
             return nil;
         }
 
@@ -40,8 +45,10 @@
         NSString *headerMatter = nil;
         [scanner scanUpToString:@"\n\n" intoString:&headerMatter];
         NSArray *lines = [headerMatter componentsSeparatedByString:@"\n"];
-        if ([lines count] < 4) {
-            NSLog(@"Invalid amount of lines: %u", (unsigned)[lines count]);
+        if ([lines count] < kNumLinesRequired) {
+            *error = [[NSError alloc] initWithDomain:kMocktailResponseErrorDomain
+                                                code:MocktailResponseErrorNumberOfLines
+                                            userInfo:@{kNumberOfLinesErrorUserDataKey: lines}];
             return nil;
         }
 
@@ -61,10 +68,10 @@
     return self;
 }
 
-+ (MocktailResponse *)mocktailResponseForFileAtURL:(NSURL *)url {
++ (MocktailResponse *)mocktailResponseForFileAtURL:(NSURL *)url error:(NSError *__autoreleasing *)error {
     NSAssert(url, @"Expected valid URL.");
 
-    return [[MocktailResponse alloc] initWithFileAtURL:url];
+    return [[MocktailResponse alloc] initWithFileAtURL:url error:error];
 }
 
 @end
