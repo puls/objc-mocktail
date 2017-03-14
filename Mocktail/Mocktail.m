@@ -240,7 +240,7 @@ static NSMutableSet *_allMocktails;
     MocktailResponse *response = [MocktailResponse new];
     response.mocktail = self;
     response.methodRegex = [NSRegularExpression regularExpressionWithPattern:lines[0] options:NSRegularExpressionCaseInsensitive error:nil];
-    response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:lines[1] options:NSRegularExpressionCaseInsensitive error:nil];
+    response.absoluteURLRegex = [NSRegularExpression regularExpressionWithPattern:[lines[1] stringByReplacingOccurrencesOfString:@"?" withString:@"\?"] options:NSRegularExpressionCaseInsensitive error:nil];
     response.statusCode = [lines[2] integerValue];
     NSMutableDictionary *headers = [[NSMutableDictionary alloc] init];
     for (NSString *line in [lines subarrayWithRange:NSMakeRange(3, lines.count - 3)]) {
