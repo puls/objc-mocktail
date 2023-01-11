@@ -13,7 +13,7 @@
 		4F60C6FE296DF9F50095BE5E /* Mocktail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F60C6F8296DF9F50095BE5E /* Mocktail.m */; };
 		4F60C6FF296DF9F50095BE5E /* MocktailURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F60C6F9296DF9F50095BE5E /* MocktailURLProtocol.m */; };
 		4F60C700296DF9F50095BE5E /* MocktailResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F60C6FA296DF9F50095BE5E /* MocktailResponse.m */; };
-		4F76644B296DD54A002AA10B /* Mocktail_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F76644A296DD54A002AA10B /* Mocktail_Private.h */; };
+		4F8590C1296EAAB700786664 /* Mocktail_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F8590C0296EAAB700786664 /* Mocktail_Private.h */; };
 		A822634216C45BC4007C81BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A822634116C45BC4007C81BC /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +24,7 @@
 		4F60C6F8296DF9F50095BE5E /* Mocktail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mocktail.m; sourceTree = "<group>"; };
 		4F60C6F9296DF9F50095BE5E /* MocktailURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MocktailURLProtocol.m; sourceTree = "<group>"; };
 		4F60C6FA296DF9F50095BE5E /* MocktailResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MocktailResponse.m; sourceTree = "<group>"; };
-		4F76644A296DD54A002AA10B /* Mocktail_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mocktail_Private.h; sourceTree = "<group>"; };
+		4F8590C0296EAAB700786664 /* Mocktail_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mocktail_Private.h; sourceTree = "<group>"; };
 		4FEDF6A9296DD4B100538731 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		A822633E16C45BC4007C81BC /* libMocktail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMocktail.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A822634116C45BC4007C81BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -46,6 +46,7 @@
 		4F60C6F3296DF9F50095BE5E /* include */ = {
 			isa = PBXGroup;
 			children = (
+				4F8590C0296EAAB700786664 /* Mocktail_Private.h */,
 				4F60C6F4296DF9F50095BE5E /* MocktailResponse.h */,
 				4F60C6F5296DF9F50095BE5E /* Mocktail.h */,
 				4F60C6F6296DF9F50095BE5E /* MocktailURLProtocol.h */,
@@ -118,7 +119,6 @@
 		A822634416C45BC4007C81BC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4F76644A296DD54A002AA10B /* Mocktail_Private.h */,
 				A822634516C45BC4007C81BC /* Mocktail-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -132,8 +132,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F60C6FD296DF9F50095BE5E /* MocktailURLProtocol.h in Headers */,
-				4F76644B296DD54A002AA10B /* Mocktail_Private.h in Headers */,
 				4F60C6FB296DF9F50095BE5E /* MocktailResponse.h in Headers */,
+				4F8590C1296EAAB700786664 /* Mocktail_Private.h in Headers */,
 				4F60C6FC296DF9F50095BE5E /* Mocktail.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
