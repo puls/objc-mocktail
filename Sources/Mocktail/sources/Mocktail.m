@@ -8,12 +8,12 @@
 //  which Square, Inc. licenses this file to you.
 //
 
+@import UIKit;
+
 #import "Mocktail.h"
 #import "Mocktail_Private.h"
 #import "MocktailResponse.h"
 #import "MocktailURLProtocol.h"
-#import <UIKit/UIKit.h>
-
 
 static NSString *const MocktailFileExtension = @".tail";
 static NSString *const MocktailPasteboardName = @"Mocktail Query String";
